@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kor-Radio</title>
+  <style>
+    :root{
+      --bg1:#dff3ff;
+      --bg2:#fff4d6;
+      --card:#ffffffcc;
+      --ink:#1b2b34;
+      --muted:#556b78;
+      --accent:#ff5aa5;
+      --accent2:#4ad6ff;
+      --accent3:#ffd166;
+      --shadow: 0 18px 40px rgba(0,0,0,.12);
+      --radius: 26px;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue";
+      color:var(--ink);
+      background:
+        radial-gradient(900px 500px at 15% 20%, var(--bg2), transparent 70%),
+        radial-gradient(900px 500px at 85% 30%, var(--bg1), transparent 70%),
+        radial-gradient(700px 500px at 60% 95%, #e9ffe0, transparent 65%),
+        linear-gradient(135deg, #f6fbff, #fffaf0);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .wrap{
+      width:min(980px, 100%);
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:18px;
+    }
+    @media (max-width: 860px){
+      .wrap{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      border-radius: var(--radius);
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.6);
+      overflow:hidden;
+      position:relative;
+    }
+    .card::before{
+      content:"";
+      position:absolute; inset:-40px -60px auto auto;
+      width:260px; height:260px;
+      background: radial-gradient(circle at 30% 30%, var(--accent2), transparent 65%),
+                  radial-gradient(circle at 60% 60%, var(--accent), transparent 60%),
+                  radial-gradient(circle at 40% 70%, var(--accent3), transparent 60%);
+      filter: blur(2px);
+      opacity:.35;
+      transform: rotate(10deg);
+      pointer-events:none;
+    }
+
+    .hero{
+      padding:22px 22px 16px;
+    }
+    .titleRow{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      margin-bottom:10px;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.8);
+      border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 6px 18px rgba(0,0,0,.06);
+    }
+    .logo{
+      width:34px; height:34px; border-radius:12px;
+      background:
+        radial-gradient(circle at 35% 35%, #fff, transparent 60%),
+        linear-gradient(135deg, var(--accent2), var(--accent));
+      box-shadow: 0 10px 20px rgba(255,90,165,.18);
+      position:relative;
+    }
+    .logo::after{
+      content:"♪";
+      position:absolute; inset:0;
+      display:grid; place-items:center;
+      color:white; font-weight:800;
+      text-shadow: 0 2px 10px rgba(0,0,0,.15);
+    }
+    h1{
+      font-size: 22px;
+      margin:0;
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin:0;
+      color:var(--muted);
+      font-size: 13.5px;
+      line-height:1.35;
+    }
+
+    .now{
+      padding: 14px 22px 18px;
+      display:grid;
+      gap:10px;
+    }
+    .nowTop{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .track{
+      display:grid;
+      gap:4px;
+      min-width:0;
+    }
+    .trackName{
+      font-weight:800;
+      font-size:16px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .trackMeta{
+      font-size:12.5px;
+      color:var(--muted);
+    }
+
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      padding-top:4px;
+    }
+    .btnRow{ display:flex; gap:10px; align-items:center; }
+    button{
+      appearance:none;
+      border:0;
+      cursor:pointer;
+      border-radius: 16px;
+      padding: 10px 12px;
+      font-weight:700;
+      color:var(--ink);
+      background: rgba(255,255,255,.9);
+      border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 10px 22px rgba(0,0,0,.08);
+      transition: transform .08s ease, box-shadow .12s ease;
+      user-select:none;
+    }
+    button:active{ transform: translateY(1px); box-shadow: 0 6px 14px rgba(0,0,0,.10); }
+    .primary{
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      color:white;
+      border:0;
+    }
+    .pill{
+      padding:10px 14px;
+      border-radius:999px;
+    }
+    .toggleOn{
+      outline: 3px solid rgba(74,214,255,.22);
+      box-shadow: 0 12px 26px rgba(74,214,255,.18);
+    }
+
+    .progressWrap{
+      display:grid;
+      gap:8px;
+      padding-top:6px;
+    }
+    .bar{
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.06);
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.7);
+    }
+    .bar > div{
+      height:100%;
+      width:0%;
+      border-radius:999px;
+      background: linear-gradient(90deg, var(--accent3), var(--accent), var(--accent2));
+      transition: width .05s linear;
+    }
+    .timeRow{
+      display:flex; justify-content:space-between;
+      font-size:12px; color:var(--muted);
+    }
+
+    .side{
+      padding: 18px 18px 16px;
+    }
+    .side h2{
+      margin:0 0 10px;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .list{
+      margin:0; padding:0;
+      list-style:none;
+      display:grid; gap:8px;
+      max-height: 340px;
+      overflow:auto;
+      padding-right:6px;
+    }
+    .item{
+      display:flex; gap:10px; align-items:center;
+      padding:10px 10px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(0,0,0,.05);
+      cursor:pointer;
+      user-select:none;
+    }
+    .dot{
+      width:12px; height:12px;
+      border-radius:999px;
+      background: rgba(0,0,0,.12);
+      box-shadow: inset 0 2px 6px rgba(0,0,0,.12);
+      flex:0 0 auto;
+    }
+    .item.active .dot{
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      box-shadow: 0 6px 14px rgba(255,90,165,.18);
+    }
+    .itemTxt{ min-width:0; }
+    .itemName{
+      font-weight:800;
+      font-size: 13.5px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .itemSmall{
+      font-size: 12px;
+      color: var(--muted);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+
+    .footer{
+      padding: 14px 22px 18px;
+      border-top: 1px solid rgba(0,0,0,.06);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .vol{
+      display:flex; align-items:center; gap:10px;
+      font-size:12px; color:var(--muted);
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(0,0,0,.05);
+      padding:8px 10px;
+      border-radius: 999px;
+    }
+    input[type="range"]{ width: 140px; }
+    .hint{ font-size:12px; color:var(--muted); }
+    .smallLink{
+      font-size:12px; color:var(--muted);
+      text-decoration:none;
+      border-bottom:1px dashed rgba(85,107,120,.4);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <!-- PLAYER -->
+    <div class="card">
+      <div class="hero">
+        <div class="titleRow">
+          <div class="badge">
+            <div class="logo" aria-hidden="true"></div>
+            <div>
+              <h1>Kor-Radio</h1>
+              <p class="sub">Tryk ▶ for at starte. Spiller løbende fra jeres playlist (shuffle/loop kan slås til).</p>
+            </div>
+          </div>
+          <button class="pill" id="btnHelp" title="Hjælp">?</button>
+        </div>
+      </div>
+
+      <div class="now">
+        <div class="nowTop">
+          <div class="track">
+            <div class="trackName" id="nowName">Ikke startet endnu</div>
+            <div class="trackMeta" id="nowMeta">Klar når du trykker ▶</div>
+          </div>
+          <div class="btnRow">
+            <button id="btnPrev" title="Forrige">⟵</button>
+            <button class="primary" id="btnPlay" title="Afspil/Pause">▶ Start</button>
+            <button id="btnNext" title="Næste">⟶</button>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="btnRow">
+            <button class="pill" id="btnShuffle" title="Shuffle">🔀 Shuffle</button>
+            <button class="pill toggleOn" id="btnLoop" title="Loop">🔁 Loop</button>
+          </div>
+          <div class="hint" id="statusHint">Tip: Shuffle giver “radio-feeling”.</div>
+        </div>
+
+        <div class="progressWrap">
+          <div class="bar" id="bar">
+            <div id="barFill"></div>
+          </div>
+          <div class="timeRow">
+            <span id="tCur">0:00</span>
+            <span id="tDur">0:00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="vol">
+          🔊 Volume
+          <input id="vol" type="range" min="0" max="1" step="0.01" value="0.85" />
+        </div>
+        <div class="hint">
+          <span id="count">0</span> numre i køen ·
+          <a class="smallLink" href="#" id="openTrack">Åbn fil i ny fane</a>
+        </div>
+      </div>
+
+      <audio id="audio" preload="metadata"></audio>
+    </div>
+
+    <!-- PLAYLIST -->
+    <div class="card">
+      <div class="side">
+        <h2>Playlist</h2>
+        <ul class="list" id="list"></ul>
+        <p class="hint" style="margin:12px 2px 0;">
+          Klik et nummer for at vælge. Når et nummer slutter, går den automatisk videre.
+        </p>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // 1) UDSKIFT DISSE MED JERES EGNE FILER (direkte URL til .mp3/.m4a/.wav)
+  // Tip: Brug hosting der giver "direct file" links (webhotel/GitHub release/Cloud storage med direkte link).
+  const TRACKS = [
+    { title: "Sopran – Vers 1", artist: "Åbne Stemmer", url: "https://example.com/audio/sopran-vers1.mp3" },
+    { title: "Alt – Omkvæd",    artist: "Åbne Stemmer", url: "https://example.com/audio/alt-omkvaed.mp3" },
+    { title: "Tenor – Hel",     artist: "Åbne Stemmer", url: "https://example.com/audio/tenor-hel.mp3" },
+    { title: "Bas – Hel",       artist: "Åbne Stemmer", url: "https://example.com/audio/bas-hel.mp3" }
+  ];
+
+  // 2) Player state
+  const el = (id)=>document.getElementById(id);
+  const audio = el("audio");
+  const listEl = el("list");
+  const nowName = el("nowName");
+  const nowMeta = el("nowMeta");
+  const btnPlay = el("btnPlay");
+  const btnNext = el("btnNext");
+  const btnPrev = el("btnPrev");
+  const btnShuffle = el("btnShuffle");
+  const btnLoop = el("btnLoop");
+  const statusHint = el("statusHint");
+  const bar = el("bar");
+  const barFill = el("barFill");
+  const tCur = el("tCur");
+  const tDur = el("tDur");
+  const vol = el("vol");
+  const count = el("count");
+  const openTrack = el("openTrack");
+  const btnHelp = el("btnHelp");
+
+  let index = 0;
+  let isShuffle = false;
+  let isLoop = true;
+
+  function fmt(sec){
+    if (!isFinite(sec) || sec < 0) return "0:00";
+    sec = Math.floor(sec);
+    const m = Math.floor(sec/60);
+    const s = String(sec%60).padStart(2,"0");
+    return `${m}:${s}`;
+  }
+
+  function setActive(){
+    [...listEl.children].forEach((li,i)=>{
+      li.classList.toggle("active", i === index);
+    });
+  }
+
+  function renderList(){
+    listEl.innerHTML = "";
+    TRACKS.forEach((t,i)=>{
+      const li = document.createElement("li");
+      li.className = "item";
+      li.innerHTML = `
+        <span class="dot" aria-hidden="true"></span>
+        <div class="itemTxt">
+          <div class="itemName">${t.title}</div>
+          <div class="itemSmall">${t.artist || ""}</div>
+        </div>
+      `;
+      li.addEventListener("click", ()=>{
+        load(i, true);
+      });
+      listEl.appendChild(li);
+    });
+    count.textContent = TRACKS.length;
+  }
+
+  function load(i, autoplay=false){
+    index = (i + TRACKS.length) % TRACKS.length;
+    const t = TRACKS[index];
+
+    audio.src = t.url;
+    nowName.textContent = t.title;
+    nowMeta.textContent = t.artist || "";
+    openTrack.href = t.url;
+    setActive();
+
+    statusHint.textContent = "Klar. Tryk ▶ hvis den ikke starter (autoplay er blokeret i browseren).";
+    btnPlay.textContent = "▶ Start";
+
+    if (autoplay){
+      audio.play().then(()=>{
+        btnPlay.textContent = "⏸ Pause";
+        statusHint.textContent = isShuffle ? "Shuffle er tændt – nu kører den som radio." : "Afspiller i rækkefølge.";
+      }).catch(()=>{
+        // Autoplay/permission: user must click play
+        statusHint.textContent = "Klik ▶ Start for at afspille (browser kræver et klik).";
+      });
+    }
+  }
+
+  function next(){
+    if (isShuffle && TRACKS.length > 1){
+      let n = index;
+      while (n === index) n = Math.floor(Math.random()*TRACKS.length);
+      load(n, true);
+    } else {
+      load(index + 1, true);
+    }
+  }
+
+  function prev(){
+    load(index - 1, true);
+  }
+
+  btnPlay.addEventListener("click", ()=>{
+    if (!audio.src) load(index, false);
+
+    if (audio.paused){
+      audio.play().then(()=>{
+        btnPlay.textContent = "⏸ Pause";
+        statusHint.textContent = isShuffle ? "Shuffle er tændt – nu kører den som radio." : "Afspiller i rækkefølge.";
+      }).catch(()=>{
+        statusHint.textContent = "Kunne ikke starte. Tjek at dine links er direkte lydfiler (.mp3).";
+      });
+    } else {
+      audio.pause();
+      btnPlay.textContent = "▶ Start";
+      statusHint.textContent = "Sat på pause.";
+    }
+  });
+
+  btnNext.addEventListener("click", next);
+  btnPrev.addEventListener("click", prev);
+
+  btnShuffle.addEventListener("click", ()=>{
+    isShuffle = !isShuffle;
+    btnShuffle.classList.toggle("toggleOn", isShuffle);
+    statusHint.textContent = isShuffle ? "Shuffle tændt – radio-feeling!" : "Shuffle slukket – afspiller i rækkefølge.";
+  });
+
+  btnLoop.addEventListener("click", ()=>{
+    isLoop = !isLoop;
+    btnLoop.classList.toggle("toggleOn", isLoop);
+    statusHint.textContent = isLoop ? "Loop tændt – spiller videre for evigt." : "Loop slukket – stopper efter sidste nummer.";
+  });
+
+  audio.addEventListener("ended", ()=>{
+    if (index === TRACKS.length - 1 && !isLoop && !isShuffle){
+      btnPlay.textContent = "▶ Start";
+      statusHint.textContent = "Færdig (loop er slukket).";
+      return;
+    }
+    next();
+  });
+
+  audio.addEventListener("timeupdate", ()=>{
+    const p = (audio.currentTime / (audio.duration || 1)) * 100;
+    barFill.style.width = `${Math.min(100, Math.max(0,p))}%`;
+    tCur.textContent = fmt(audio.currentTime);
+    tDur.textContent = fmt(audio.duration);
+  });
+
+  bar.addEventListener("click", (e)=>{
+    const r = bar.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width;
+    if (audio.duration) audio.currentTime = x * audio.duration;
+  });
+
+  vol.addEventListener("input", ()=> audio.volume = parseFloat(vol.value));
+  audio.volume = parseFloat(vol.value);
+
+  openTrack.addEventListener("click", (e)=>{
+    if (!openTrack.href || openTrack.href === "#") e.preventDefault();
+  });
+
+  btnHelp.addEventListener("click", ()=>{
+    alert(
+`Hjælp
+- Autoplay med lyd er blokeret i de fleste browsere.
+- Brug direkte links til .mp3/.m4a/.wav.
+- Klik ▶ Start for at begynde.
+
+Tip: Tænd Shuffle for “radio-feeling”.`
+    );
+  });
+
+  // Init
+  renderList();
+  load(0, false);
+</script>
+</body>
+</html>
