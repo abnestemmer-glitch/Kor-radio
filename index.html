@@ -270,79 +270,75 @@
 </head>
 
 <body>
-  <div class="wrap">
-    <!-- PLAYER -->
-    <div class="card">
-      <div class="hero">
-        <div class="titleRow">
-          <div class="badge">
-            <div class="logo" aria-hidden="true"></div>
-            <div>
-              <h1>Kor-Radio</h1>
-              <p class="sub">Tryk ▶ for at starte. Spiller løbende fra jeres playlist (shuffle/loop kan slås til).</p>
-            </div>
-          </div>
-          <button class="pill" id="btnHelp" title="Hjælp">?</button>
+<div class="card radioShell">
+  <div class="radioTop">
+    <div class="brand">
+      <div class="brandName">KOR-RADIO</div>
+      <div class="brandSub">Åbne Stemmer • FM</div>
+    </div>
+
+    <button class="radioHelp" id="btnHelp" title="Hjælp">?</button>
+  </div>
+
+  <div class="radioBody">
+    <!-- Speaker -->
+    <div class="speaker">
+      <div class="grille"></div>
+      <div class="speakerLabel">TRANSISTOR</div>
+    </div>
+
+    <!-- Tuner / Controls -->
+    <div class="tuner">
+      <div class="dialWindow">
+        <div class="dialScale">
+          <span>88</span><span>92</span><span>96</span><span>100</span><span>104</span><span>108</span>
+        </div>
+        <div class="dialNeedle" id="dialNeedle"></div>
+      </div>
+
+      <div class="nowBlock">
+        <div class="nowTitle" id="nowName">Ikke startet endnu</div>
+        <div class="nowMeta" id="nowMeta">Klar når du trykker ▶</div>
+        <div class="status" id="statusHint">Tip: Shuffle giver “radio-feeling”.</div>
+      </div>
+
+      <div class="knobRow">
+        <div class="btnRow">
+          <button class="knobBtn" id="btnPrev" title="Forrige">⟵</button>
+          <button class="knobBtn primaryKnob" id="btnPlay" title="Afspil/Pause">▶ Start</button>
+          <button class="knobBtn" id="btnNext" title="Næste">⟶</button>
+        </div>
+
+        <div class="toggles">
+          <button class="miniToggle" id="btnShuffle" title="Shuffle">🔀</button>
+          <button class="miniToggle toggleOn" id="btnLoop" title="Loop">🔁</button>
         </div>
       </div>
 
-      <div class="now">
-        <div class="nowTop">
-          <div class="track">
-            <div class="trackName" id="nowName">Ikke startet endnu</div>
-            <div class="trackMeta" id="nowMeta">Klar når du trykker ▶</div>
-          </div>
-          <div class="btnRow">
-            <button id="btnPrev" title="Forrige">⟵</button>
-            <button class="primary" id="btnPlay" title="Afspil/Pause">▶ Start</button>
-            <button id="btnNext" title="Næste">⟶</button>
-          </div>
-        </div>
-
-        <div class="controls">
-          <div class="btnRow">
-            <button class="pill" id="btnShuffle" title="Shuffle">🔀 Shuffle</button>
-            <button class="pill toggleOn" id="btnLoop" title="Loop">🔁 Loop</button>
-          </div>
-          <div class="hint" id="statusHint">Tip: Shuffle giver “radio-feeling”.</div>
-        </div>
-
-        <div class="progressWrap">
-          <div class="bar" id="bar">
-            <div id="barFill"></div>
-          </div>
-          <div class="timeRow">
-            <span id="tCur">0:00</span>
-            <span id="tDur">0:00</span>
-          </div>
+      <div class="progressWrap">
+        <div class="bar" id="bar"><div id="barFill"></div></div>
+        <div class="timeRow">
+          <span id="tCur">0:00</span>
+          <span id="tDur">0:00</span>
         </div>
       </div>
 
-      <div class="footer">
+      <div class="bottomRow">
         <div class="vol">
-          🔊 Volume
+          🔊 VOL
           <input id="vol" type="range" min="0" max="1" step="0.01" value="0.85" />
         </div>
+
         <div class="hint">
           <span id="count">0</span> numre i køen ·
           <a class="smallLink" href="#" id="openTrack">Åbn fil i ny fane</a>
         </div>
       </div>
-
-      <audio id="audio" preload="metadata"></audio>
-    </div>
-
-    <!-- PLAYLIST -->
-    <div class="card">
-      <div class="side">
-        <h2>Playlist</h2>
-        <ul class="list" id="list"></ul>
-        <p class="hint" style="margin:12px 2px 0;">
-          Klik et nummer for at vælge. Når et nummer slutter, går den automatisk videre.
-        </p>
-      </div>
     </div>
   </div>
+
+  <audio id="audio" preload="metadata"></audio>
+</div>
 
 <script>
   // 1) UDSKIFT DISSE MED JERES EGNE FILER (direkte URL til .mp3/.m4a/.wav)
