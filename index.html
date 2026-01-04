@@ -1,327 +1,735 @@
 <!doctype html>
 <html lang="da">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kor-Radio – Åbne Stemmer</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kor-radio</title>
+  <style>
+    :root{
+      --wood1:#8a5a34;
+      --wood2:#6f4324;
+      --wood3:#5b341a;
+      --beige1:#efe3cf;
+      --beige2:#e3d3b8;
+      --metal1:#d9d2c6;
+      --metal2:#b9b0a2;
+      --ink:#1f1a14;
+      --muted:#5b4a3b;
+      --accent:#b30d0d;
+      --shadow: 0 28px 70px rgba(0,0,0,.25);
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 600px at 20% 10%, #fff, transparent 60%),
+        radial-gradient(1200px 600px at 80% 20%, #f7f1e6, transparent 60%),
+        linear-gradient(180deg, #fbf7ef, #f1eadc);
+      padding: 26px;
+      display:flex;
+      justify-content:center;
+    }
+    .wrap{
+      width:min(1120px, 100%);
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 18px;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .wrap{ grid-template-columns: 1fr; }
+    }
 
-<style>
-/* ---------- BASIS ---------- */
-* { box-sizing: border-box; }
-body{
-  margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  background: radial-gradient(circle at top, #f5f1e8, #e8e1d4);
-  display:flex;
-  justify-content:center;
-  padding:30px;
-}
-.wrap{
-  max-width:1100px;
-  width:100%;
-  display:grid;
-  grid-template-columns: 1.1fr .9fr;
-  gap:20px;
-}
-@media(max-width:900px){
-  .wrap{ grid-template-columns:1fr; }
-}
+    /* --- RADIO CABINET --- */
+    .radio{
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.18), transparent 40%),
+        linear-gradient(90deg, rgba(255,255,255,.06), transparent 30%),
+        linear-gradient(135deg, var(--wood1), var(--wood2) 55%, var(--wood3));
+      border: 1px solid rgba(0,0,0,.22);
+      padding: 18px;
+    }
+    /* wood grain */
+    .radio::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        repeating-linear-gradient(90deg,
+          rgba(0,0,0,.06) 0 2px,
+          rgba(255,255,255,.02) 2px 6px,
+          rgba(0,0,0,.03) 6px 10px);
+      opacity:.35;
+      mix-blend-mode:multiply;
+      pointer-events:none;
+    }
+    .radio::after{
+      content:"";
+      position:absolute; inset:10px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.18);
+      pointer-events:none;
+    }
 
-/* ---------- TRANSISTOR RADIO ---------- */
-.radioShell{
-  background: linear-gradient(#eadcc6, #d6bfa1);
-  border-radius:30px;
-  box-shadow: 0 25px 60px rgba(0,0,0,.25);
-  padding:18px;
-}
-.radioTop{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.brand{
-  background:rgba(255,255,255,.45);
-  padding:10px 14px;
-  border-radius:18px;
-  border:1px solid rgba(0,0,0,.15);
-}
-.brandName{
-  font-weight:900;
-  letter-spacing:.2em;
-  font-size:13px;
-}
-.brandSub{
-  font-size:11px;
-  opacity:.7;
-}
-.radioBody{
-  display:grid;
-  grid-template-columns: 1fr 1.3fr;
-  gap:16px;
-  margin-top:14px;
-}
-@media(max-width:900px){
-  .radioBody{ grid-template-columns:1fr; }
-}
+    .radioTop{
+      position:relative;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 10px;
+      padding-bottom: 10px;
+      z-index:1;
+    }
+    .badge{
+      display:inline-flex;
+      gap:12px;
+      align-items:center;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(0,0,0,.15);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.20);
+      backdrop-filter: blur(2px);
+    }
+    .mark{
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, var(--metal1), var(--metal2));
+      border: 1px solid rgba(0,0,0,.25);
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      letter-spacing:.06em;
+      color: rgba(0,0,0,.55);
+      text-shadow: 0 1px 0 rgba(255,255,255,.45);
+      user-select:none;
+    }
+    .title{
+      margin:0;
+      font-weight:900;
+      letter-spacing:.18em;
+      font-size: 14px;
+      color: rgba(255,255,255,.88);
+      text-transform:uppercase;
+    }
+    .subtitle{
+      margin:4px 0 0;
+      font-size: 12px;
+      color: rgba(255,255,255,.70);
+    }
+    .helpBtn{
+      width: 38px; height: 38px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,.25);
+      background: linear-gradient(180deg, var(--metal1), var(--metal2));
+      box-shadow: 0 10px 18px rgba(0,0,0,.25);
+      cursor:pointer;
+      font-weight:900;
+      color: rgba(0,0,0,.65);
+      user-select:none;
+    }
 
-/* ---------- SPEAKER ---------- */
-.speaker{
-  background: linear-gradient(#a87346,#7c4e2c);
-  border-radius:22px;
-  padding:14px;
-  box-shadow: inset 0 12px 25px rgba(0,0,0,.3);
-}
-.grille{
-  height:240px;
-  border-radius:18px;
-  background:
-    repeating-linear-gradient(
-      90deg,
-      rgba(0,0,0,.45) 0 2px,
-      rgba(255,255,255,.08) 2px 6px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      rgba(0,0,0,.25) 0 2px,
-      transparent 2px 10px
-    );
-}
-.speakerLabel{
-  text-align:center;
-  margin-top:10px;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:.15em;
-  color:rgba(255,255,255,.8);
-}
+    .radioBody{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 16px;
+      align-items:stretch;
+      margin-top: 6px;
+    }
+    @media (max-width: 980px){
+      .radioBody{ grid-template-columns: 1fr; }
+    }
 
-/* ---------- TUNER ---------- */
-.tuner{
-  background:rgba(255,255,255,.45);
-  border-radius:22px;
-  padding:14px;
-  border:1px solid rgba(0,0,0,.15);
-}
-.dialWindow{
-  background:linear-gradient(#fff,#e8e8e8);
-  border-radius:16px;
-  padding:10px;
-  position:relative;
-  margin-bottom:10px;
-}
-.dialScale{
-  display:flex;
-  justify-content:space-between;
-  font-size:11px;
-  opacity:.7;
-}
-.dialNeedle{
-  position:absolute;
-  top:8px;
-  bottom:8px;
-  width:2px;
-  background:#c20000;
-  left:14px;
-}
-.nowTitle{
-  font-weight:900;
-  font-size:16px;
-}
-.nowMeta{
-  font-size:12px;
-  opacity:.7;
-}
-.status{
-  font-size:12px;
-  opacity:.7;
-  margin-top:6px;
-}
+    /* --- SPEAKER --- */
+    .speaker{
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.10), transparent 45%),
+        linear-gradient(180deg, #3b2818, #2a1b10);
+      border: 1px solid rgba(0,0,0,.35);
+      padding: 14px;
+      min-height: 320px;
+      box-shadow: inset 0 14px 30px rgba(0,0,0,.35);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .cloth{
+      flex:1;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.12), transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(0,0,0,.20), transparent 55%),
+        repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 1px, rgba(255,255,255,.04) 1px 5px),
+        repeating-linear-gradient(90deg, rgba(0,0,0,.10) 0 1px, rgba(255,255,255,.03) 1px 6px),
+        linear-gradient(180deg, var(--beige1), var(--beige2));
+      border: 1px solid rgba(0,0,0,.22);
+      box-shadow: inset 0 10px 22px rgba(0,0,0,.18);
+    }
+    .speakerFooter{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-top: 12px;
+      color: rgba(255,255,255,.70);
+      font-size: 12px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      user-select:none;
+    }
+    .modelTag{
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(0,0,0,.25);
+    }
 
-/* ---------- CONTROLS ---------- */
-.controls{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:10px;
-}
-.btnRow button{
-  border-radius:16px;
-  border:1px solid rgba(0,0,0,.2);
-  padding:10px 14px;
-  font-weight:800;
-  background:linear-gradient(#fff,#ddd);
-  cursor:pointer;
-}
-.primary{
-  border:2px solid #c20000;
-}
-.toggles button{
-  width:40px;
-  height:40px;
-  border-radius:14px;
-}
+    /* --- TUNER PANEL --- */
+    .panel{
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.16), rgba(0,0,0,.08)),
+        linear-gradient(180deg, #2b2118, #1f1812);
+      border: 1px solid rgba(0,0,0,.35);
+      box-shadow: inset 0 12px 26px rgba(0,0,0,.35);
+      padding: 14px;
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+    }
 
-/* ---------- PROGRESS ---------- */
-.bar{
-  height:10px;
-  background:rgba(0,0,0,.15);
-  border-radius:999px;
-  margin-top:12px;
-}
-.bar > div{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,#c20000,#f3a3a3);
-  border-radius:999px;
-}
-.timeRow{
-  display:flex;
-  justify-content:space-between;
-  font-size:12px;
-  opacity:.7;
-}
+    .dialGlass{
+      border-radius: 14px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.14)),
+        linear-gradient(180deg, #e9e2d6, #cfc5b5);
+      border: 1px solid rgba(0,0,0,.28);
+      box-shadow:
+        inset 0 2px 0 rgba(255,255,255,.45),
+        inset 0 -14px 24px rgba(0,0,0,.12);
+      padding: 10px 12px;
+      position:relative;
+      overflow:hidden;
+      user-select:none;
+    }
+    .dialGlass::before{
+      content:"";
+      position:absolute;
+      inset:-40px -60px auto auto;
+      width:220px; height:140px;
+      transform:rotate(18deg);
+      background: linear-gradient(180deg, rgba(255,255,255,.55), transparent);
+      opacity:.35;
+      pointer-events:none;
+    }
+    .dialRow{
+      display:flex;
+      justify-content:space-between;
+      font-size: 12px;
+      color: rgba(0,0,0,.65);
+      font-weight:800;
+      letter-spacing:.06em;
+    }
+    .dialNeedle{
+      position:absolute;
+      top: 10px;
+      bottom: 10px;
+      width: 2px;
+      left: 12px;
+      background: var(--accent);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.55);
+      border-radius: 2px;
+    }
+    .freqLabel{
+      margin-top: 6px;
+      font-size: 11px;
+      color: rgba(0,0,0,.55);
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      display:flex;
+      justify-content:space-between;
+    }
 
-/* ---------- VOLUME ---------- */
-.bottom{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:10px;
-}
-.bottom input{ width:140px; }
+    .nowBox{
+      color: rgba(255,255,255,.92);
+      padding: 6px 2px 0;
+      min-height: 84px;
+    }
+    .nowName{
+      font-weight:900;
+      font-size: 16px;
+      letter-spacing:.02em;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .nowMeta{
+      font-size: 12px;
+      color: rgba(255,255,255,.70);
+      margin-top: 3px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .status{
+      font-size: 12px;
+      color: rgba(255,255,255,.65);
+      margin-top: 10px;
+    }
 
-/* ---------- PLAYLIST ---------- */
-.playlist{
-  background:rgba(255,255,255,.6);
-  border-radius:26px;
-  padding:16px;
-}
-.playlist h2{ margin-top:0; }
-.item{
-  padding:10px;
-  border-radius:14px;
-  cursor:pointer;
-}
-.item.active{
-  background:rgba(194,0,0,.12);
-  font-weight:800;
-}
-</style>
+    /* --- KNOBS --- */
+    .controls{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+    .knobCluster{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+    }
+    .btn{
+      border: 1px solid rgba(0,0,0,.35);
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: linear-gradient(180deg, var(--metal1), var(--metal2));
+      box-shadow: 0 10px 18px rgba(0,0,0,.28);
+      cursor:pointer;
+      font-weight:900;
+      color: rgba(0,0,0,.65);
+      user-select:none;
+    }
+    .btn:active{ transform: translateY(1px); }
+    .playBtn{
+      border-radius: 999px;
+      padding: 12px 16px;
+      border: 2px solid rgba(179,13,13,.40);
+      position:relative;
+    }
+
+    .smallBtns{
+      display:flex;
+      gap: 8px;
+    }
+    .mini{
+      width: 44px; height: 44px;
+      border-radius: 999px;
+      display:grid;
+      place-items:center;
+      padding:0;
+    }
+    .toggleOn{
+      outline: 3px solid rgba(179,13,13,.15);
+    }
+
+    /* --- PROGRESS --- */
+    .progressWrap{
+      margin-top: 4px;
+    }
+    .bar{
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      overflow:hidden;
+      border: 1px solid rgba(0,0,0,.35);
+    }
+    .bar > div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(179,13,13,.75), rgba(179,13,13,.20));
+    }
+    .timeRow{
+      display:flex;
+      justify-content:space-between;
+      font-size: 12px;
+      color: rgba(255,255,255,.65);
+      margin-top: 6px;
+      user-select:none;
+    }
+
+    /* --- BOTTOM --- */
+    .bottomRow{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 10px;
+      flex-wrap:wrap;
+      color: rgba(255,255,255,.70);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+    .vol{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(0,0,0,.35);
+      user-select:none;
+    }
+    input[type="range"]{ width: 160px; }
+    .link{
+      color: rgba(255,255,255,.78);
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(255,255,255,.35);
+    }
+
+    /* --- PLAYLIST "SONG BOOK" --- */
+    .book{
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fffaf0, #f2eadc);
+      border: 1px solid rgba(0,0,0,.12);
+      box-shadow: 0 18px 45px rgba(0,0,0,.14);
+      padding: 16px;
+    }
+    .book h2{
+      margin: 0 0 10px;
+      font-size: 14px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color: rgba(0,0,0,.68);
+    }
+    .list{
+      margin:0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap: 8px;
+      max-height: 520px;
+      overflow:auto;
+      padding-right: 6px;
+    }
+    .item{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,.10);
+      background: rgba(255,255,255,.65);
+      cursor:pointer;
+      user-select:none;
+    }
+    .dot{
+      width: 10px; height: 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.20);
+      flex:0 0 auto;
+    }
+    .item.active{
+      background: rgba(179,13,13,.10);
+      border-color: rgba(179,13,13,.22);
+    }
+    .item.active .dot{
+      background: var(--accent);
+      box-shadow: 0 6px 14px rgba(179,13,13,.22);
+    }
+    .itemTitle{
+      font-weight:900;
+      font-size: 13px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .itemSub{
+      font-size: 12px;
+      color: rgba(0,0,0,.55);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+  </style>
 </head>
 
 <body>
-<div class="wrap">
+  <div class="wrap">
 
-<!-- RADIO -->
-<div class="radioShell">
-  <div class="radioTop">
-    <div class="brand">
-      <div class="brandName">KOR-RADIO</div>
-      <div class="brandSub">Åbne Stemmer • TRANSISTOR</div>
-    </div>
-  </div>
-
-  <div class="radioBody">
-    <div class="speaker">
-      <div class="grille"></div>
-      <div class="speakerLabel">FM • SOLID STATE</div>
-    </div>
-
-    <div class="tuner">
-      <div class="dialWindow">
-        <div class="dialScale"><span>88</span><span>92</span><span>96</span><span>100</span><span>104</span><span>108</span></div>
-        <div class="dialNeedle" id="needle"></div>
-      </div>
-
-      <div class="nowTitle" id="nowName">Klar</div>
-      <div class="nowMeta" id="nowMeta">Tryk ▶ Start</div>
-      <div class="status" id="status">Shuffle giver radio-feeling</div>
-
-      <div class="controls">
-        <div class="btnRow">
-          <button id="prev">⟵</button>
-          <button id="play" class="primary">▶ Start</button>
-          <button id="next">⟶</button>
+    <!-- RADIO -->
+    <div class="radio">
+      <div class="radioTop">
+        <div class="badge">
+          <div class="mark">FM</div>
+          <div>
+            <div class="title">KOR-RADIO</div>
+            <div class="subtitle">Åbne Stemmer • Træ-kabinet</div>
+          </div>
         </div>
-        <div class="toggles">
-          <button id="shuffle">🔀</button>
-          <button id="loop">🔁</button>
+        <button class="helpBtn" id="btnHelp" title="Hjælp">?</button>
+      </div>
+
+      <div class="radioBody">
+        <div class="speaker">
+          <div class="cloth"></div>
+          <div class="speakerFooter">
+            <span class="modelTag">TRANSISTOR</span>
+            <span class="modelTag">SOLID STATE</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="dialGlass">
+            <div class="dialRow">
+              <span>88</span><span>92</span><span>96</span><span>100</span><span>104</span><span>108</span>
+            </div>
+            <div class="dialNeedle" id="dialNeedle"></div>
+            <div class="freqLabel">
+              <span>FM MHz</span>
+              <span id="freqReadout">96.0</span>
+            </div>
+          </div>
+
+          <div class="nowBox">
+            <div class="nowName" id="nowName">Ikke startet endnu</div>
+            <div class="nowMeta" id="nowMeta">Tryk ▶ Start for at spille</div>
+            <div class="status" id="statusHint">Tip: Shuffle giver “radio-feeling”.</div>
+          </div>
+
+          <div class="controls">
+            <div class="knobCluster">
+              <button class="btn" id="btnPrev" title="Forrige">⟵</button>
+              <button class="btn playBtn" id="btnPlay" title="Afspil/Pause">▶ Start</button>
+              <button class="btn" id="btnNext" title="Næste">⟶</button>
+            </div>
+            <div class="smallBtns">
+              <button class="btn mini" id="btnShuffle" title="Shuffle">🔀</button>
+              <button class="btn mini toggleOn" id="btnLoop" title="Loop">🔁</button>
+            </div>
+          </div>
+
+          <div class="progressWrap">
+            <div class="bar" id="bar"><div id="barFill"></div></div>
+            <div class="timeRow">
+              <span id="tCur">0:00</span>
+              <span id="tDur">0:00</span>
+            </div>
+          </div>
+
+          <div class="bottomRow">
+            <div class="vol">
+              VOL
+              <input id="vol" type="range" min="0" max="1" step="0.01" value="0.85" />
+            </div>
+            <div>
+              <span id="count">0</span> numre • <a class="link" href="#" id="openTrack">Åbn fil</a>
+            </div>
+          </div>
+
+          <audio id="audio" preload="metadata"></audio>
         </div>
       </div>
+    </div>
 
-      <div class="bar"><div id="barFill"></div></div>
-      <div class="timeRow"><span id="cur">0:00</span><span id="dur">0:00</span></div>
-
-      <div class="bottom">
-        <div>🔊 <input type="range" id="vol" min="0" max="1" step="0.01" value="0.85"></div>
-        <div id="count"></div>
+    <!-- PLAYLIST -->
+    <div class="book">
+      <h2>Playlist</h2>
+      <ul class="list" id="list"></ul>
+      <div style="margin-top:10px;font-size:12px;color:rgba(0,0,0,.55);">
+        Klik et nummer for at vælge. Når et nummer slutter, går den videre.
       </div>
     </div>
+
   </div>
-
-  <audio id="audio"></audio>
-</div>
-
-<!-- PLAYLIST -->
-<div class="playlist">
-<h2>Playlist</h2>
-<div id="list"></div>
-</div>
-
-</div>
 
 <script>
-const TRACKS = [
- {title:"1. 21-4", url:"audio/1%2021-4.mp3"},
- {title:"2. Weather With You", url:"audio/2%20weather%20with%20youx.mp3"},
- {title:"3. Fragile", url:"audio/3%20Fragilex.mp3"},
- {title:"4. Ordinary World", url:"audio/4%20Ordinary%20World.mp3"},
- {title:"5. Det kun vigtigt", url:"audio/5%20Det%20kun%20Vigtigt.mp3"},
- {title:"6. Frit Land", url:"audio/6%20Frit%20Land.mp3"},
- {title:"7. I morgen er der osse en dag", url:"audio/7%20I%20morgen%20er%20der%20osse%20en%20Dag.mp3"},
- {title:"8. Africa", url:"audio/8%20Africa.mp3"},
- {title:"9. Afterglow", url:"audio/9%20Afterglow.mp3"}
-];
+  // --- DIN PLAYLIST (filnavne matcher din audio-mappe på GitHub) ---
+  const TRACKS = [
+    { title: "1. 21-4",               artist: "Åbne Stemmer", url: "audio/1%2021-4.mp3" },
+    { title: "2. Weather With You",   artist: "Åbne Stemmer", url: "audio/2%20weather%20with%20youx.mp3" },
+    { title: "3. Fragile",            artist: "Åbne Stemmer", url: "audio/3%20Fragilex.mp3" },
+    { title: "4. Ordinary World",     artist: "Åbne Stemmer", url: "audio/4%20Ordinary%20World.mp3" },
+    { title: "5. Det kun vigtigt",    artist: "Åbne Stemmer", url: "audio/5%20Det%20kun%20Vigtigt.mp3" },
+    { title: "6. Frit Land",          artist: "Åbne Stemmer", url: "audio/6%20Frit%20Land.mp3" },
+    { title: "7. I morgen er der osse en Dag", artist: "Åbne Stemmer", url: "audio/7%20I%20morgen%20er%20der%20osse%20en%20Dag.mp3" },
+    { title: "8. Africa",             artist: "Åbne Stemmer", url: "audio/8%20Africa.mp3" },
+    { title: "9. Afterglow",          artist: "Åbne Stemmer", url: "audio/9%20Afterglow.mp3" }
+  ];
 
-const audio = document.getElementById("audio");
-const list = document.getElementById("list");
-const playBtn = document.getElementById("play");
-const barFill = document.getElementById("barFill");
-const needle = document.getElementById("needle");
-let index = 0, shuffle=false, loop=true;
+  // --- ELEMENTS ---
+  const el = (id)=>document.getElementById(id);
+  const audio = el("audio");
+  const listEl = el("list");
+  const nowName = el("nowName");
+  const nowMeta = el("nowMeta");
+  const statusHint = el("statusHint");
+  const btnPlay = el("btnPlay");
+  const btnNext = el("btnNext");
+  const btnPrev = el("btnPrev");
+  const btnShuffle = el("btnShuffle");
+  const btnLoop = el("btnLoop");
+  const bar = el("bar");
+  const barFill = el("barFill");
+  const tCur = el("tCur");
+  const tDur = el("tDur");
+  const vol = el("vol");
+  const count = el("count");
+  const openTrack = el("openTrack");
+  const dialNeedle = el("dialNeedle");
+  const freqReadout = el("freqReadout");
+  const btnHelp = el("btnHelp");
 
-TRACKS.forEach((t,i)=>{
-  const d=document.createElement("div");
-  d.className="item";
-  d.textContent=t.title;
-  d.onclick=()=>load(i,true);
-  list.appendChild(d);
-});
+  let index = 0;
+  let isShuffle = false;
+  let isLoop = true;
 
-function load(i,auto){
-  index=i;
-  audio.src=TRACKS[i].url;
-  document.getElementById("nowName").textContent=TRACKS[i].title;
-  [...list.children].forEach((e,n)=>e.classList.toggle("active",n===i));
-  needle.style.left=`${10+(i/(TRACKS.length-1))*80}%`;
-  if(auto) audio.play();
-}
-load(0,false);
+  function fmt(sec){
+    if (!isFinite(sec) || sec < 0) return "0:00";
+    sec = Math.floor(sec);
+    const m = Math.floor(sec/60);
+    const s = String(sec%60).padStart(2,"0");
+    return `${m}:${s}`;
+  }
 
-playBtn.onclick=()=>{
-  if(audio.paused){ audio.play(); playBtn.textContent="⏸"; }
-  else{ audio.pause(); playBtn.textContent="▶ Start"; }
-};
-document.getElementById("next").onclick=()=>load((index+1)%TRACKS.length,true);
-document.getElementById("prev").onclick=()=>load((index-1+TRACKS.length)%TRACKS.length,true);
-document.getElementById("vol").oninput=e=>audio.volume=e.target.value;
+  function renderList(){
+    listEl.innerHTML = "";
+    TRACKS.forEach((t,i)=>{
+      const li = document.createElement("li");
+      li.className = "item";
+      li.innerHTML = `
+        <span class="dot" aria-hidden="true"></span>
+        <div style="min-width:0;">
+          <div class="itemTitle">${t.title}</div>
+          <div class="itemSub">${t.artist || ""}</div>
+        </div>
+      `;
+      li.addEventListener("click", ()=> load(i, true));
+      listEl.appendChild(li);
+    });
+    count.textContent = TRACKS.length;
+  }
 
-audio.ontimeupdate=()=>{
-  barFill.style.width=(audio.currentTime/audio.duration*100||0)+"%";
-  document.getElementById("cur").textContent=Math.floor(audio.currentTime/60)+":"+String(Math.floor(audio.currentTime%60)).padStart(2,"0");
-  document.getElementById("dur").textContent=Math.floor(audio.duration/60)+":"+String(Math.floor(audio.duration%60)).padStart(2,"0");
-};
+  function setActive(){
+    [...listEl.children].forEach((li,i)=> li.classList.toggle("active", i===index));
+  }
+
+  function moveNeedle(){
+    // kosmetisk: flyt nål + “frekvens” 88..108
+    const pct = (index / Math.max(1, TRACKS.length - 1)); // 0..1
+    const leftPx = 12; // start i dialGlass
+    const rightPad = 12;
+    // dialNeedle ligger i dialGlass med padding 12, så vi bruger calc
+    dialNeedle.style.left = `calc(${leftPx}px + ${pct} * (100% - ${leftPx + rightPad}px))`;
+    const freq = 88 + pct * 20; // 88..108
+    freqReadout.textContent = freq.toFixed(1);
+  }
+
+  function load(i, autoplay=false){
+    index = (i + TRACKS.length) % TRACKS.length;
+    const t = TRACKS[index];
+    audio.src = t.url;
+
+    nowName.textContent = t.title;
+    nowMeta.textContent = t.artist || "";
+    openTrack.href = t.url;
+
+    setActive();
+    moveNeedle();
+
+    btnPlay.textContent = "▶ Start";
+    statusHint.textContent = "Tryk ▶ Start (autoplay kan være blokeret i browseren).";
+
+    if (autoplay){
+      audio.play().then(()=>{
+        btnPlay.textContent = "⏸ Pause";
+        statusHint.textContent = isShuffle ? "Shuffle tændt — radio-feeling!" : "Afspiller i rækkefølge.";
+      }).catch(()=>{
+        statusHint.textContent = "Klik ▶ Start for at afspille (browser kræver et klik).";
+      });
+    }
+  }
+
+  function next(){
+    if (isShuffle && TRACKS.length > 1){
+      let n = index;
+      while (n === index) n = Math.floor(Math.random()*TRACKS.length);
+      load(n, true);
+    } else {
+      load(index + 1, true);
+    }
+  }
+  function prev(){ load(index - 1, true); }
+
+  btnPlay.addEventListener("click", ()=>{
+    if (!audio.src) load(index, false);
+    if (audio.paused){
+      audio.play().then(()=>{
+        btnPlay.textContent = "⏸ Pause";
+        statusHint.textContent = isShuffle ? "Shuffle tændt — radio-feeling!" : "Afspiller i rækkefølge.";
+      }).catch(()=>{
+        statusHint.textContent = "Kunne ikke starte. Tjek at dine links er direkte lydfiler (.mp3).";
+      });
+    } else {
+      audio.pause();
+      btnPlay.textContent = "▶ Start";
+      statusHint.textContent = "Sat på pause.";
+    }
+  });
+
+  btnNext.addEventListener("click", next);
+  btnPrev.addEventListener("click", prev);
+
+  btnShuffle.addEventListener("click", ()=>{
+    isShuffle = !isShuffle;
+    btnShuffle.classList.toggle("toggleOn", isShuffle);
+    statusHint.textContent = isShuffle ? "Shuffle tændt — radio-feeling!" : "Shuffle slukket — afspiller i rækkefølge.";
+  });
+
+  btnLoop.addEventListener("click", ()=>{
+    isLoop = !isLoop;
+    btnLoop.classList.toggle("toggleOn", isLoop);
+    statusHint.textContent = isLoop ? "Loop tændt — spiller videre." : "Loop slukket — stopper efter sidste nummer.";
+  });
+
+  audio.addEventListener("ended", ()=>{
+    if (index === TRACKS.length - 1 && !isLoop && !isShuffle){
+      btnPlay.textContent = "▶ Start";
+      statusHint.textContent = "Færdig (loop er slukket).";
+      return;
+    }
+    next();
+  });
+
+  audio.addEventListener("timeupdate", ()=>{
+    const p = (audio.currentTime / (audio.duration || 1)) * 100;
+    barFill.style.width = `${Math.min(100, Math.max(0,p))}%`;
+    tCur.textContent = fmt(audio.currentTime);
+    tDur.textContent = fmt(audio.duration);
+  });
+
+  bar.addEventListener("click", (e)=>{
+    const r = bar.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width;
+    if (audio.duration) audio.currentTime = x * audio.duration;
+  });
+
+  vol.addEventListener("input", ()=> audio.volume = parseFloat(vol.value));
+  audio.volume = parseFloat(vol.value);
+
+  btnHelp.addEventListener("click", ()=>{
+    alert(
+`Kor-radio hjælp
+- Autoplay med lyd er blokeret i de fleste browsere.
+- Klik ▶ Start for at afspille.
+- Shuffle giver radio-feeling.
+
+Hvis afspilning fejler:
+- Tjek at mp3-links virker direkte i browseren.
+- Filnavne (store/små bogstaver + mellemrum) skal matche 1:1.`
+    );
+  });
+
+  // init
+  renderList();
+  load(0, false);
 </script>
 </body>
 </html>
-
