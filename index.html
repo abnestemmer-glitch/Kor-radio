@@ -1,731 +1,327 @@
 <!doctype html>
 <html lang="da">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Kor-Radio</title>
-  <style>/* --- TRANSISTOR RADIO LOOK --- */
-.radioShell{
-  background: linear-gradient(180deg, #e9dcc7, #d9c4a6);
-  border: 1px solid rgba(0,0,0,.12);
-  box-shadow: 0 18px 50px rgba(0,0,0,.18);
-  border-radius: 28px;
-  overflow: hidden;
-  position: relative;
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kor-Radio – Åbne Stemmer</title>
+
+<style>
+/* ---------- BASIS ---------- */
+* { box-sizing: border-box; }
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background: radial-gradient(circle at top, #f5f1e8, #e8e1d4);
+  display:flex;
+  justify-content:center;
+  padding:30px;
 }
-.radioShell::before{
-  content:"";
-  position:absolute; inset:0;
-  background:
-    radial-gradient(900px 420px at 30% -10%, rgba(255,255,255,.35), transparent 60%),
-    radial-gradient(700px 360px at 120% 30%, rgba(0,0,0,.08), transparent 55%);
-  pointer-events:none;
+.wrap{
+  max-width:1100px;
+  width:100%;
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap:20px;
+}
+@media(max-width:900px){
+  .wrap{ grid-template-columns:1fr; }
+}
+
+/* ---------- TRANSISTOR RADIO ---------- */
+.radioShell{
+  background: linear-gradient(#eadcc6, #d6bfa1);
+  border-radius:30px;
+  box-shadow: 0 25px 60px rgba(0,0,0,.25);
+  padding:18px;
 }
 .radioTop{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding: 16px 18px 10px;
 }
 .brand{
-  background: rgba(255,255,255,.35);
-  border: 1px solid rgba(0,0,0,.08);
-  border-radius: 18px;
-  padding: 10px 12px;
-  backdrop-filter: blur(6px);
+  background:rgba(255,255,255,.45);
+  padding:10px 14px;
+  border-radius:18px;
+  border:1px solid rgba(0,0,0,.15);
 }
 .brandName{
-  font-weight: 900;
-  letter-spacing: .18em;
-  font-size: 13px;
+  font-weight:900;
+  letter-spacing:.2em;
+  font-size:13px;
 }
 .brandSub{
-  font-size: 11px;
-  opacity: .75;
-  margin-top: 2px;
+  font-size:11px;
+  opacity:.7;
 }
-.radioHelp{
-  width: 38px; height: 38px;
-  border-radius: 14px;
-  border: 1px solid rgba(0,0,0,.10);
-  background: rgba(255,255,255,.55);
-  box-shadow: 0 10px 22px rgba(0,0,0,.10);
-  cursor:pointer;
-}
-
 .radioBody{
   display:grid;
   grid-template-columns: 1fr 1.3fr;
-  gap: 14px;
-  padding: 12px 18px 18px;
+  gap:16px;
+  margin-top:14px;
 }
-@media (max-width: 860px){
-  .radioBody{ grid-template-columns: 1fr; }
+@media(max-width:900px){
+  .radioBody{ grid-template-columns:1fr; }
 }
 
+/* ---------- SPEAKER ---------- */
 .speaker{
-  border-radius: 22px;
-  background: linear-gradient(180deg, #b5845a, #8a5b38);
-  border: 1px solid rgba(0,0,0,.18);
-  box-shadow: inset 0 10px 24px rgba(0,0,0,.18);
-  position: relative;
-  padding: 14px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  min-height: 320px;
+  background: linear-gradient(#a87346,#7c4e2c);
+  border-radius:22px;
+  padding:14px;
+  box-shadow: inset 0 12px 25px rgba(0,0,0,.3);
 }
 .grille{
-  flex:1;
-  border-radius: 18px;
+  height:240px;
+  border-radius:18px;
   background:
-    radial-gradient(circle at 15% 15%, rgba(255,255,255,.12), transparent 35%),
-    repeating-linear-gradient(90deg, rgba(0,0,0,.32) 0 2px, rgba(255,255,255,.08) 2px 6px),
-    repeating-linear-gradient(0deg, rgba(0,0,0,.20) 0 2px, transparent 2px 10px);
-  opacity: .95;
-  border: 1px solid rgba(0,0,0,.22);
+    repeating-linear-gradient(
+      90deg,
+      rgba(0,0,0,.45) 0 2px,
+      rgba(255,255,255,.08) 2px 6px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,.25) 0 2px,
+      transparent 2px 10px
+    );
 }
 .speakerLabel{
-  margin-top: 10px;
-  font-weight: 800;
-  letter-spacing: .12em;
-  font-size: 11px;
-  color: rgba(255,255,255,.75);
-  text-shadow: 0 2px 8px rgba(0,0,0,.35);
+  text-align:center;
+  margin-top:10px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.15em;
+  color:rgba(255,255,255,.8);
 }
 
+/* ---------- TUNER ---------- */
 .tuner{
-  border-radius: 22px;
-  background: rgba(255,255,255,.40);
-  border: 1px solid rgba(0,0,0,.10);
-  box-shadow: inset 0 10px 22px rgba(255,255,255,.18);
-  padding: 14px;
-  backdrop-filter: blur(10px);
+  background:rgba(255,255,255,.45);
+  border-radius:22px;
+  padding:14px;
+  border:1px solid rgba(0,0,0,.15);
 }
-
 .dialWindow{
-  position: relative;
-  border-radius: 18px;
-  padding: 12px 14px;
-  background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.35));
-  border: 1px solid rgba(0,0,0,.12);
-  box-shadow: inset 0 6px 18px rgba(0,0,0,.08);
-  overflow:hidden;
+  background:linear-gradient(#fff,#e8e8e8);
+  border-radius:16px;
+  padding:10px;
+  position:relative;
+  margin-bottom:10px;
 }
 .dialScale{
   display:flex;
   justify-content:space-between;
-  font-size: 11px;
-  opacity:.75;
-  letter-spacing:.08em;
+  font-size:11px;
+  opacity:.7;
 }
 .dialNeedle{
   position:absolute;
-  top: 10px;
-  bottom: 10px;
-  width: 2px;
-  left: 14px; /* vi flytter den via JS */
-  background: rgba(200,0,0,.7);
-  box-shadow: 0 0 0 1px rgba(255,255,255,.35);
-  border-radius: 2px;
+  top:8px;
+  bottom:8px;
+  width:2px;
+  background:#c20000;
+  left:14px;
 }
-
-.nowBlock{ padding: 12px 2px 6px; }
 .nowTitle{
-  font-weight: 900;
-  font-size: 16px;
-  letter-spacing: .02em;
+  font-weight:900;
+  font-size:16px;
 }
 .nowMeta{
-  font-size: 12px;
-  opacity: .75;
-  margin-top: 2px;
+  font-size:12px;
+  opacity:.7;
 }
 .status{
-  font-size: 12px;
-  opacity: .75;
-  margin-top: 8px;
+  font-size:12px;
+  opacity:.7;
+  margin-top:6px;
 }
 
-.knobRow{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 10px;
-  padding-top: 6px;
-}
-.knobBtn{
-  border: 1px solid rgba(0,0,0,.14);
-  background: linear-gradient(180deg, rgba(255,255,255,.8), rgba(255,255,255,.45));
-  border-radius: 18px;
-  padding: 10px 12px;
-  font-weight: 800;
-  box-shadow: 0 10px 20px rgba(0,0,0,.10);
-  cursor:pointer;
-}
-.primaryKnob{
-  background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.40));
-  position:relative;
-}
-.primaryKnob::after{
-  content:"";
-  position:absolute; inset: -2px;
-  border-radius: 18px;
-  border: 2px solid rgba(200,0,0,.25);
-  pointer-events:none;
-}
-
-.toggles{ display:flex; gap:8px; }
-.miniToggle{
-  width: 40px; height: 40px;
-  border-radius: 16px;
-  border: 1px solid rgba(0,0,0,.14);
-  background: rgba(255,255,255,.55);
-  box-shadow: 0 10px 20px rgba(0,0,0,.10);
-  cursor:pointer;
-}
-.miniToggle.toggleOn{
-  outline: 3px solid rgba(200,0,0,.10);
-}
-
-.bottomRow{
+/* ---------- CONTROLS ---------- */
+.controls{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap: 12px;
-  flex-wrap:wrap;
-  padding-top: 10px;
+  margin-top:10px;
+}
+.btnRow button{
+  border-radius:16px;
+  border:1px solid rgba(0,0,0,.2);
+  padding:10px 14px;
+  font-weight:800;
+  background:linear-gradient(#fff,#ddd);
+  cursor:pointer;
+}
+.primary{
+  border:2px solid #c20000;
+}
+.toggles button{
+  width:40px;
+  height:40px;
+  border-radius:14px;
 }
 
-/* Små tweaks så din eksisterende progressbar ser “analog” ud */
-.bar{ height: 12px; border-radius: 999px; background: rgba(0,0,0,.08); }
-.bar > div{ background: linear-gradient(90deg, rgba(200,0,0,.65), rgba(200,0,0,.25)); }
-.smallLink{ color: rgba(0,0,0,.65); }
+/* ---------- PROGRESS ---------- */
+.bar{
+  height:10px;
+  background:rgba(0,0,0,.15);
+  border-radius:999px;
+  margin-top:12px;
+}
+.bar > div{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#c20000,#f3a3a3);
+  border-radius:999px;
+}
+.timeRow{
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+  opacity:.7;
+}
 
-    :root{
-      --bg1:#dff3ff;
-      --bg2:#fff4d6;
-      --card:#ffffffcc;
-      --ink:#1b2b34;
-      --muted:#556b78;
-      --accent:#ff5aa5;
-      --accent2:#4ad6ff;
-      --accent3:#ffd166;
-      --shadow: 0 18px 40px rgba(0,0,0,.12);
-      --radius: 26px;
-    }
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      min-height:100vh;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue";
-      color:var(--ink);
-      background:
-        radial-gradient(900px 500px at 15% 20%, var(--bg2), transparent 70%),
-        radial-gradient(900px 500px at 85% 30%, var(--bg1), transparent 70%),
-        radial-gradient(700px 500px at 60% 95%, #e9ffe0, transparent 65%),
-        linear-gradient(135deg, #f6fbff, #fffaf0);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-    }
-    .wrap{
-      width:min(980px, 100%);
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:18px;
-    }
-    @media (max-width: 860px){
-      .wrap{ grid-template-columns: 1fr; }
-    }
+/* ---------- VOLUME ---------- */
+.bottom{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:10px;
+}
+.bottom input{ width:140px; }
 
-    .card{
-      border-radius: var(--radius);
-      background: var(--card);
-      backdrop-filter: blur(10px);
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(255,255,255,.6);
-      overflow:hidden;
-      position:relative;
-    }
-    .card::before{
-      content:"";
-      position:absolute; inset:-40px -60px auto auto;
-      width:260px; height:260px;
-      background: radial-gradient(circle at 30% 30%, var(--accent2), transparent 65%),
-                  radial-gradient(circle at 60% 60%, var(--accent), transparent 60%),
-                  radial-gradient(circle at 40% 70%, var(--accent3), transparent 60%);
-      filter: blur(2px);
-      opacity:.35;
-      transform: rotate(10deg);
-      pointer-events:none;
-    }
-
-    .hero{
-      padding:22px 22px 16px;
-    }
-    .titleRow{
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      margin-bottom:10px;
-    }
-    .badge{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:10px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.8);
-      border: 1px solid rgba(0,0,0,.06);
-      box-shadow: 0 6px 18px rgba(0,0,0,.06);
-    }
-    .logo{
-      width:34px; height:34px; border-radius:12px;
-      background:
-        radial-gradient(circle at 35% 35%, #fff, transparent 60%),
-        linear-gradient(135deg, var(--accent2), var(--accent));
-      box-shadow: 0 10px 20px rgba(255,90,165,.18);
-      position:relative;
-    }
-    .logo::after{
-      content:"♪";
-      position:absolute; inset:0;
-      display:grid; place-items:center;
-      color:white; font-weight:800;
-      text-shadow: 0 2px 10px rgba(0,0,0,.15);
-    }
-    h1{
-      font-size: 22px;
-      margin:0;
-      letter-spacing:.2px;
-    }
-    .sub{
-      margin:0;
-      color:var(--muted);
-      font-size: 13.5px;
-      line-height:1.35;
-    }
-
-    .now{
-      padding: 14px 22px 18px;
-      display:grid;
-      gap:10px;
-    }
-    .nowTop{
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-    }
-    .track{
-      display:grid;
-      gap:4px;
-      min-width:0;
-    }
-    .trackName{
-      font-weight:800;
-      font-size:16px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .trackMeta{
-      font-size:12.5px;
-      color:var(--muted);
-    }
-
-    .controls{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-      padding-top:4px;
-    }
-    .btnRow{ display:flex; gap:10px; align-items:center; }
-    button{
-      appearance:none;
-      border:0;
-      cursor:pointer;
-      border-radius: 16px;
-      padding: 10px 12px;
-      font-weight:700;
-      color:var(--ink);
-      background: rgba(255,255,255,.9);
-      border: 1px solid rgba(0,0,0,.06);
-      box-shadow: 0 10px 22px rgba(0,0,0,.08);
-      transition: transform .08s ease, box-shadow .12s ease;
-      user-select:none;
-    }
-    button:active{ transform: translateY(1px); box-shadow: 0 6px 14px rgba(0,0,0,.10); }
-    .primary{
-      background: linear-gradient(135deg, var(--accent2), var(--accent));
-      color:white;
-      border:0;
-    }
-    .pill{
-      padding:10px 14px;
-      border-radius:999px;
-    }
-    .toggleOn{
-      outline: 3px solid rgba(74,214,255,.22);
-      box-shadow: 0 12px 26px rgba(74,214,255,.18);
-    }
-
-    .progressWrap{
-      display:grid;
-      gap:8px;
-      padding-top:6px;
-    }
-    .bar{
-      height: 12px;
-      border-radius: 999px;
-      background: rgba(0,0,0,.06);
-      overflow:hidden;
-      border: 1px solid rgba(255,255,255,.7);
-    }
-    .bar > div{
-      height:100%;
-      width:0%;
-      border-radius:999px;
-      background: linear-gradient(90deg, var(--accent3), var(--accent), var(--accent2));
-      transition: width .05s linear;
-    }
-    .timeRow{
-      display:flex; justify-content:space-between;
-      font-size:12px; color:var(--muted);
-    }
-
-    .side{
-      padding: 18px 18px 16px;
-    }
-    .side h2{
-      margin:0 0 10px;
-      font-size: 14px;
-      letter-spacing:.2px;
-    }
-    .list{
-      margin:0; padding:0;
-      list-style:none;
-      display:grid; gap:8px;
-      max-height: 340px;
-      overflow:auto;
-      padding-right:6px;
-    }
-    .item{
-      display:flex; gap:10px; align-items:center;
-      padding:10px 10px;
-      border-radius: 18px;
-      background: rgba(255,255,255,.85);
-      border: 1px solid rgba(0,0,0,.05);
-      cursor:pointer;
-      user-select:none;
-    }
-    .dot{
-      width:12px; height:12px;
-      border-radius:999px;
-      background: rgba(0,0,0,.12);
-      box-shadow: inset 0 2px 6px rgba(0,0,0,.12);
-      flex:0 0 auto;
-    }
-    .item.active .dot{
-      background: linear-gradient(135deg, var(--accent2), var(--accent));
-      box-shadow: 0 6px 14px rgba(255,90,165,.18);
-    }
-    .itemTxt{ min-width:0; }
-    .itemName{
-      font-weight:800;
-      font-size: 13.5px;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-    .itemSmall{
-      font-size: 12px;
-      color: var(--muted);
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-
-    .footer{
-      padding: 14px 22px 18px;
-      border-top: 1px solid rgba(0,0,0,.06);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .vol{
-      display:flex; align-items:center; gap:10px;
-      font-size:12px; color:var(--muted);
-      background: rgba(255,255,255,.75);
-      border: 1px solid rgba(0,0,0,.05);
-      padding:8px 10px;
-      border-radius: 999px;
-    }
-    input[type="range"]{ width: 140px; }
-    .hint{ font-size:12px; color:var(--muted); }
-    .smallLink{
-      font-size:12px; color:var(--muted);
-      text-decoration:none;
-      border-bottom:1px dashed rgba(85,107,120,.4);
-    }
-  </style>
+/* ---------- PLAYLIST ---------- */
+.playlist{
+  background:rgba(255,255,255,.6);
+  border-radius:26px;
+  padding:16px;
+}
+.playlist h2{ margin-top:0; }
+.item{
+  padding:10px;
+  border-radius:14px;
+  cursor:pointer;
+}
+.item.active{
+  background:rgba(194,0,0,.12);
+  font-weight:800;
+}
+</style>
 </head>
 
 <body>
-<div class="card radioShell">
+<div class="wrap">
+
+<!-- RADIO -->
+<div class="radioShell">
   <div class="radioTop">
     <div class="brand">
       <div class="brandName">KOR-RADIO</div>
-      <div class="brandSub">Åbne Stemmer • FM</div>
+      <div class="brandSub">Åbne Stemmer • TRANSISTOR</div>
     </div>
-
-    <button class="radioHelp" id="btnHelp" title="Hjælp">?</button>
   </div>
 
   <div class="radioBody">
-    <!-- Speaker -->
     <div class="speaker">
       <div class="grille"></div>
-      <div class="speakerLabel">TRANSISTOR</div>
+      <div class="speakerLabel">FM • SOLID STATE</div>
     </div>
 
-    <!-- Tuner / Controls -->
     <div class="tuner">
       <div class="dialWindow">
-        <div class="dialScale">
-          <span>88</span><span>92</span><span>96</span><span>100</span><span>104</span><span>108</span>
-        </div>
-        <div class="dialNeedle" id="dialNeedle"></div>
+        <div class="dialScale"><span>88</span><span>92</span><span>96</span><span>100</span><span>104</span><span>108</span></div>
+        <div class="dialNeedle" id="needle"></div>
       </div>
 
-      <div class="nowBlock">
-        <div class="nowTitle" id="nowName">Ikke startet endnu</div>
-        <div class="nowMeta" id="nowMeta">Klar når du trykker ▶</div>
-        <div class="status" id="statusHint">Tip: Shuffle giver “radio-feeling”.</div>
-      </div>
+      <div class="nowTitle" id="nowName">Klar</div>
+      <div class="nowMeta" id="nowMeta">Tryk ▶ Start</div>
+      <div class="status" id="status">Shuffle giver radio-feeling</div>
 
-      <div class="knobRow">
+      <div class="controls">
         <div class="btnRow">
-          <button class="knobBtn" id="btnPrev" title="Forrige">⟵</button>
-          <button class="knobBtn primaryKnob" id="btnPlay" title="Afspil/Pause">▶ Start</button>
-          <button class="knobBtn" id="btnNext" title="Næste">⟶</button>
+          <button id="prev">⟵</button>
+          <button id="play" class="primary">▶ Start</button>
+          <button id="next">⟶</button>
         </div>
-
         <div class="toggles">
-          <button class="miniToggle" id="btnShuffle" title="Shuffle">🔀</button>
-          <button class="miniToggle toggleOn" id="btnLoop" title="Loop">🔁</button>
+          <button id="shuffle">🔀</button>
+          <button id="loop">🔁</button>
         </div>
       </div>
 
-      <div class="progressWrap">
-        <div class="bar" id="bar"><div id="barFill"></div></div>
-        <div class="timeRow">
-          <span id="tCur">0:00</span>
-          <span id="tDur">0:00</span>
-        </div>
-      </div>
+      <div class="bar"><div id="barFill"></div></div>
+      <div class="timeRow"><span id="cur">0:00</span><span id="dur">0:00</span></div>
 
-      <div class="bottomRow">
-        <div class="vol">
-          🔊 VOL
-          <input id="vol" type="range" min="0" max="1" step="0.01" value="0.85" />
-        </div>
-
-        <div class="hint">
-          <span id="count">0</span> numre i køen ·
-          <a class="smallLink" href="#" id="openTrack">Åbn fil i ny fane</a>
-        </div>
+      <div class="bottom">
+        <div>🔊 <input type="range" id="vol" min="0" max="1" step="0.01" value="0.85"></div>
+        <div id="count"></div>
       </div>
     </div>
   </div>
 
-  <audio id="audio" preload="metadata"></audio>
+  <audio id="audio"></audio>
+</div>
+
+<!-- PLAYLIST -->
+<div class="playlist">
+<h2>Playlist</h2>
+<div id="list"></div>
+</div>
+
 </div>
 
 <script>
-  // 1) UDSKIFT DISSE MED JERES EGNE FILER (direkte URL til .mp3/.m4a/.wav)
-  // Tip: Brug hosting der giver "direct file" links (webhotel/GitHub release/Cloud storage med direkte link).
 const TRACKS = [
-  { title: "1. 21-4", artist: "Åbne Stemmer", url: "audio/1%2021-4.mp3" },
-  { title: "2. Weather With You", artist: "Åbne Stemmer", url: "audio/2%20weather%20with%20youx.mp3" },
-  { title: "3. Fragile", artist: "Åbne Stemmer", url: "audio/3%20Fragilex.mp3" },
-  { title: "4. Ordinary World", artist: "Åbne Stemmer", url: "audio/4%20Ordinary%20World.mp3" },
-  { title: "5. Det kun Vigtigt", artist: "Åbne Stemmer", url: "audio/5%20Det%20kun%20Vigtigt.mp3" },
-  { title: "6. Frit Land", artist: "Åbne Stemmer", url: "audio/6%20Frit%20Land.mp3" },
-  { title: "7. I morgen er der osse en Dag", artist: "Åbne Stemmer", url: "audio/7%20I%20morgen%20er%20der%20osse%20en%20Dag.mp3" },
-  { title: "8. Africa", artist: "Åbne Stemmer", url: "audio/8%20Africa.mp3" },
-  { title: "9. Afterglow", artist: "Åbne Stemmer", url: "audio/9%20Afterglow.mp3" }
+ {title:"1. 21-4", url:"audio/1%2021-4.mp3"},
+ {title:"2. Weather With You", url:"audio/2%20weather%20with%20youx.mp3"},
+ {title:"3. Fragile", url:"audio/3%20Fragilex.mp3"},
+ {title:"4. Ordinary World", url:"audio/4%20Ordinary%20World.mp3"},
+ {title:"5. Det kun vigtigt", url:"audio/5%20Det%20kun%20Vigtigt.mp3"},
+ {title:"6. Frit Land", url:"audio/6%20Frit%20Land.mp3"},
+ {title:"7. I morgen er der osse en dag", url:"audio/7%20I%20morgen%20er%20der%20osse%20en%20Dag.mp3"},
+ {title:"8. Africa", url:"audio/8%20Africa.mp3"},
+ {title:"9. Afterglow", url:"audio/9%20Afterglow.mp3"}
 ];
 
+const audio = document.getElementById("audio");
+const list = document.getElementById("list");
+const playBtn = document.getElementById("play");
+const barFill = document.getElementById("barFill");
+const needle = document.getElementById("needle");
+let index = 0, shuffle=false, loop=true;
 
+TRACKS.forEach((t,i)=>{
+  const d=document.createElement("div");
+  d.className="item";
+  d.textContent=t.title;
+  d.onclick=()=>load(i,true);
+  list.appendChild(d);
+});
 
-  // 2) Player state
-  const el = (id)=>document.getElementById(id);
-  const audio = el("audio");
-  const listEl = el("list");
-  const nowName = el("nowName");
-  const nowMeta = el("nowMeta");
-  const btnPlay = el("btnPlay");
-  const btnNext = el("btnNext");
-  const btnPrev = el("btnPrev");
-  const btnShuffle = el("btnShuffle");
-  const btnLoop = el("btnLoop");
-  const statusHint = el("statusHint");
-  const bar = el("bar");
-  const barFill = el("barFill");
-  const tCur = el("tCur");
-  const tDur = el("tDur");
-  const vol = el("vol");
-  const count = el("count");
-  const openTrack = el("openTrack");
-  const btnHelp = el("btnHelp");
+function load(i,auto){
+  index=i;
+  audio.src=TRACKS[i].url;
+  document.getElementById("nowName").textContent=TRACKS[i].title;
+  [...list.children].forEach((e,n)=>e.classList.toggle("active",n===i));
+  needle.style.left=`${10+(i/(TRACKS.length-1))*80}%`;
+  if(auto) audio.play();
+}
+load(0,false);
 
-  let index = 0;
-  let isShuffle = false;
-  let isLoop = true;
+playBtn.onclick=()=>{
+  if(audio.paused){ audio.play(); playBtn.textContent="⏸"; }
+  else{ audio.pause(); playBtn.textContent="▶ Start"; }
+};
+document.getElementById("next").onclick=()=>load((index+1)%TRACKS.length,true);
+document.getElementById("prev").onclick=()=>load((index-1+TRACKS.length)%TRACKS.length,true);
+document.getElementById("vol").oninput=e=>audio.volume=e.target.value;
 
-  function fmt(sec){
-    if (!isFinite(sec) || sec < 0) return "0:00";
-    sec = Math.floor(sec);
-    const m = Math.floor(sec/60);
-    const s = String(sec%60).padStart(2,"0");
-    return `${m}:${s}`;
-  }
-
-  function setActive(){
-    [...listEl.children].forEach((li,i)=>{
-      li.classList.toggle("active", i === index);
-    });
-  }
-
-  function renderList(){
-    listEl.innerHTML = "";
-    TRACKS.forEach((t,i)=>{
-      const li = document.createElement("li");
-      li.className = "item";
-      li.innerHTML = `
-        <span class="dot" aria-hidden="true"></span>
-        <div class="itemTxt">
-          <div class="itemName">${t.title}</div>
-          <div class="itemSmall">${t.artist || ""}</div>
-        </div>
-      `;
-      li.addEventListener("click", ()=>{
-        load(i, true);
-      });
-      listEl.appendChild(li);
-    });
-    count.textContent = TRACKS.length;
-  }
-
-  function load(i, autoplay=false){
-    index = (i + TRACKS.length) % TRACKS.length;
-    const t = TRACKS[index];
-
-    audio.src = t.url;
-    nowName.textContent = t.title;
-    nowMeta.textContent = t.artist || "";
-    openTrack.href = t.url;
-    setActive();
-
-    statusHint.textContent = "Klar. Tryk ▶ hvis den ikke starter (autoplay er blokeret i browseren).";
-    btnPlay.textContent = "▶ Start";
-
-    if (autoplay){
-      audio.play().then(()=>{
-        btnPlay.textContent = "⏸ Pause";
-        statusHint.textContent = isShuffle ? "Shuffle er tændt – nu kører den som radio." : "Afspiller i rækkefølge.";
-      }).catch(()=>{
-        // Autoplay/permission: user must click play
-        statusHint.textContent = "Klik ▶ Start for at afspille (browser kræver et klik).";
-      });
-    }
-  }
-
-  function next(){
-    if (isShuffle && TRACKS.length > 1){
-      let n = index;
-      while (n === index) n = Math.floor(Math.random()*TRACKS.length);
-      load(n, true);
-    } else {
-      load(index + 1, true);
-    }
-  }
-
-  function prev(){
-    load(index - 1, true);
-  }
-
-  btnPlay.addEventListener("click", ()=>{
-    if (!audio.src) load(index, false);
-
-    if (audio.paused){
-      audio.play().then(()=>{
-        btnPlay.textContent = "⏸ Pause";
-        statusHint.textContent = isShuffle ? "Shuffle er tændt – nu kører den som radio." : "Afspiller i rækkefølge.";
-      }).catch(()=>{
-        statusHint.textContent = "Kunne ikke starte. Tjek at dine links er direkte lydfiler (.mp3).";
-      });
-    } else {
-      audio.pause();
-      btnPlay.textContent = "▶ Start";
-      statusHint.textContent = "Sat på pause.";
-    }
-  });
-
-  btnNext.addEventListener("click", next);
-  btnPrev.addEventListener("click", prev);
-
-  btnShuffle.addEventListener("click", ()=>{
-    isShuffle = !isShuffle;
-    btnShuffle.classList.toggle("toggleOn", isShuffle);
-    statusHint.textContent = isShuffle ? "Shuffle tændt – radio-feeling!" : "Shuffle slukket – afspiller i rækkefølge.";
-  });
-
-  btnLoop.addEventListener("click", ()=>{
-    isLoop = !isLoop;
-    btnLoop.classList.toggle("toggleOn", isLoop);
-    statusHint.textContent = isLoop ? "Loop tændt – spiller videre for evigt." : "Loop slukket – stopper efter sidste nummer.";
-  });
-
-  audio.addEventListener("ended", ()=>{
-    if (index === TRACKS.length - 1 && !isLoop && !isShuffle){
-      btnPlay.textContent = "▶ Start";
-      statusHint.textContent = "Færdig (loop er slukket).";
-      return;
-    }
-    next();
-  });
-
-  audio.addEventListener("timeupdate", ()=>{
-    const p = (audio.currentTime / (audio.duration || 1)) * 100;
-    barFill.style.width = `${Math.min(100, Math.max(0,p))}%`;
-    tCur.textContent = fmt(audio.currentTime);
-    tDur.textContent = fmt(audio.duration);
-  });
-
-  bar.addEventListener("click", (e)=>{
-    const r = bar.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width;
-    if (audio.duration) audio.currentTime = x * audio.duration;
-  });
-
-  vol.addEventListener("input", ()=> audio.volume = parseFloat(vol.value));
-  audio.volume = parseFloat(vol.value);
-
-  openTrack.addEventListener("click", (e)=>{
-    if (!openTrack.href || openTrack.href === "#") e.preventDefault();
-  });
-
-  btnHelp.addEventListener("click", ()=>{
-    alert(
-`Hjælp
-- Autoplay med lyd er blokeret i de fleste browsere.
-- Brug direkte links til .mp3/.m4a/.wav.
-- Klik ▶ Start for at begynde.
-
-Tip: Tænd Shuffle for “radio-feeling”.`
-    );
-  });
-
-  // Init
-  renderList();
-  load(0, false);
+audio.ontimeupdate=()=>{
+  barFill.style.width=(audio.currentTime/audio.duration*100||0)+"%";
+  document.getElementById("cur").textContent=Math.floor(audio.currentTime/60)+":"+String(Math.floor(audio.currentTime%60)).padStart(2,"0");
+  document.getElementById("dur").textContent=Math.floor(audio.duration/60)+":"+String(Math.floor(audio.duration%60)).padStart(2,"0");
+};
 </script>
 </body>
 </html>
+
