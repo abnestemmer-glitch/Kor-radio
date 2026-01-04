@@ -9,16 +9,24 @@
       --wood1:#8a5a34;
       --wood2:#6f4324;
       --wood3:#5b341a;
-      --beige1:#efe3cf;
-      --beige2:#e3d3b8;
-      --metal1:#d9d2c6;
-      --metal2:#b9b0a2;
+
+      --beige1:#f2e6d2;
+      --beige2:#e6d7bd;
+
+      --metal1:#e3ddd2;
+      --metal2:#bfb6a6;
+
       --ink:#1f1a14;
       --muted:#5b4a3b;
       --accent:#b30d0d;
-      --shadow: 0 28px 70px rgba(0,0,0,.25);
+
+      --shadow: 0 22px 55px rgba(0,0,0,.22);
+      --shadow2: inset 0 14px 30px rgba(0,0,0,.35);
+      --radius: 18px;
     }
+
     *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
@@ -27,22 +35,30 @@
         radial-gradient(1200px 600px at 20% 10%, #fff, transparent 60%),
         radial-gradient(1200px 600px at 80% 20%, #f7f1e6, transparent 60%),
         linear-gradient(180deg, #fbf7ef, #f1eadc);
-      padding: 26px;
+      padding: 14px;
       display:flex;
       justify-content:center;
     }
+
+    /* мобил-first: radio over, playlist under */
     .wrap{
-      width:min(1120px, 100%);
+      width:min(1100px, 100%);
       display:grid;
-      grid-template-columns: 1.25fr .75fr;
-      gap: 18px;
+      grid-template-columns: 1fr;
+      gap: 14px;
       align-items:start;
     }
-    @media (max-width: 980px){
-      .wrap{ grid-template-columns: 1fr; }
+
+    /* desktop: 2 kolonner */
+    @media (min-width: 980px){
+      body{ padding: 26px; }
+      .wrap{
+        grid-template-columns: 1.25fr .75fr;
+        gap: 18px;
+      }
     }
 
-    /* --- RADIO CABINET --- */
+    /* ===================== RADIO CABINET ===================== */
     .radio{
       border-radius: 22px;
       box-shadow: var(--shadow);
@@ -53,9 +69,10 @@
         linear-gradient(90deg, rgba(255,255,255,.06), transparent 30%),
         linear-gradient(135deg, var(--wood1), var(--wood2) 55%, var(--wood3));
       border: 1px solid rgba(0,0,0,.22);
-      padding: 18px;
+      padding: 14px;
     }
-    /* wood grain */
+
+    /* træstruktur */
     .radio::before{
       content:"";
       position:absolute; inset:0;
@@ -78,52 +95,61 @@
 
     .radioTop{
       position:relative;
+      z-index:1;
       display:flex;
       justify-content:space-between;
-      align-items:flex-start;
+      align-items:center;
       gap: 10px;
       padding-bottom: 10px;
-      z-index:1;
     }
     .badge{
-      display:inline-flex;
-      gap:12px;
+      display:flex;
+      gap:10px;
       align-items:center;
       padding: 10px 12px;
       border-radius: 16px;
       background: rgba(255,255,255,.10);
-      border: 1px solid rgba(0,0,0,.15);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.20);
-      backdrop-filter: blur(2px);
+      border: 1px solid rgba(0,0,0,.18);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.18);
+      user-select:none;
+      min-width: 0;
     }
     .mark{
-      width: 40px; height: 40px;
+      width: 38px; height: 38px;
       border-radius: 10px;
       background: linear-gradient(180deg, var(--metal1), var(--metal2));
       border: 1px solid rgba(0,0,0,.25);
       display:grid;
       place-items:center;
       font-weight:900;
-      letter-spacing:.06em;
-      color: rgba(0,0,0,.55);
+      letter-spacing:.08em;
+      color: rgba(0,0,0,.60);
       text-shadow: 0 1px 0 rgba(255,255,255,.45);
-      user-select:none;
+      flex:0 0 auto;
     }
+    .badgeTxt{ min-width:0; }
     .title{
       margin:0;
       font-weight:900;
       letter-spacing:.18em;
-      font-size: 14px;
+      font-size: 13px;
       color: rgba(255,255,255,.88);
       text-transform:uppercase;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
     .subtitle{
       margin:4px 0 0;
       font-size: 12px;
       color: rgba(255,255,255,.70);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
+
     .helpBtn{
-      width: 38px; height: 38px;
+      width: 40px; height: 40px;
       border-radius: 999px;
       border: 1px solid rgba(0,0,0,.25);
       background: linear-gradient(180deg, var(--metal1), var(--metal2));
@@ -132,38 +158,41 @@
       font-weight:900;
       color: rgba(0,0,0,.65);
       user-select:none;
+      flex:0 0 auto;
     }
+    .helpBtn:active{ transform: translateY(1px); }
 
+    /* Mobil-first: speaker over panel */
     .radioBody{
       position:relative;
       z-index:1;
       display:grid;
-      grid-template-columns: 1.05fr 1fr;
-      gap: 16px;
-      align-items:stretch;
-      margin-top: 6px;
-    }
-    @media (max-width: 980px){
-      .radioBody{ grid-template-columns: 1fr; }
+      grid-template-columns: 1fr;
+      gap: 12px;
     }
 
-    /* --- SPEAKER --- */
+    /* Desktop: speaker + panel side-by-side */
+    @media (min-width: 980px){
+      .radio{ padding: 18px; }
+      .radioBody{
+        grid-template-columns: 1.05fr 1fr;
+        gap: 16px;
+      }
+    }
+
+    /* ===================== SPEAKER ===================== */
     .speaker{
-      border-radius: 18px;
+      border-radius: var(--radius);
       background:
         linear-gradient(180deg, rgba(255,255,255,.10), transparent 45%),
         linear-gradient(180deg, #3b2818, #2a1b10);
       border: 1px solid rgba(0,0,0,.35);
-      padding: 14px;
-      min-height: 320px;
-      box-shadow: inset 0 14px 30px rgba(0,0,0,.35);
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
+      padding: 12px;
+      box-shadow: var(--shadow2);
     }
     .cloth{
-      flex:1;
       border-radius: 14px;
+      min-height: 160px;
       background:
         radial-gradient(circle at 20% 20%, rgba(255,255,255,.12), transparent 40%),
         radial-gradient(circle at 80% 30%, rgba(0,0,0,.20), transparent 55%),
@@ -173,16 +202,22 @@
       border: 1px solid rgba(0,0,0,.22);
       box-shadow: inset 0 10px 22px rgba(0,0,0,.18);
     }
+    @media (min-width: 980px){
+      .cloth{ min-height: 260px; }
+    }
+
     .speakerFooter{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      margin-top: 12px;
+      margin-top: 10px;
       color: rgba(255,255,255,.70);
-      font-size: 12px;
+      font-size: 11px;
       letter-spacing:.12em;
       text-transform:uppercase;
       user-select:none;
+      gap: 8px;
+      flex-wrap:wrap;
     }
     .modelTag{
       padding: 6px 10px;
@@ -191,18 +226,21 @@
       border: 1px solid rgba(0,0,0,.25);
     }
 
-    /* --- TUNER PANEL --- */
+    /* ===================== PANEL ===================== */
     .panel{
-      border-radius: 18px;
+      border-radius: var(--radius);
       background:
         linear-gradient(180deg, rgba(255,255,255,.16), rgba(0,0,0,.08)),
         linear-gradient(180deg, #2b2118, #1f1812);
       border: 1px solid rgba(0,0,0,.35);
       box-shadow: inset 0 12px 26px rgba(0,0,0,.35);
-      padding: 14px;
+      padding: 12px;
       display:flex;
       flex-direction:column;
-      gap: 12px;
+      gap: 10px;
+    }
+    @media (min-width: 980px){
+      .panel{ padding: 14px; gap: 12px; }
     }
 
     .dialGlass{
@@ -255,41 +293,39 @@
       text-transform:uppercase;
       display:flex;
       justify-content:space-between;
+      gap:10px;
     }
 
     .nowBox{
       color: rgba(255,255,255,.92);
-      padding: 6px 2px 0;
-      min-height: 84px;
+      padding: 4px 2px 0;
+      min-height: 86px;
     }
     .nowName{
       font-weight:900;
       font-size: 16px;
       letter-spacing:.02em;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      line-height:1.15;
     }
     .nowMeta{
       font-size: 12px;
       color: rgba(255,255,255,.70);
-      margin-top: 3px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      margin-top: 4px;
+      line-height:1.25;
     }
     .status{
       font-size: 12px;
       color: rgba(255,255,255,.65);
-      margin-top: 10px;
+      margin-top: 8px;
+      line-height:1.25;
     }
 
-    /* --- KNOBS --- */
+    /* ===================== CONTROLS ===================== */
     .controls{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap: 12px;
+      gap: 10px;
       flex-wrap:wrap;
     }
     .knobCluster{
@@ -299,21 +335,22 @@
     }
     .btn{
       border: 1px solid rgba(0,0,0,.35);
-      border-radius: 14px;
-      padding: 10px 12px;
+      border-radius: 16px;
+      padding: 12px 14px;
       background: linear-gradient(180deg, var(--metal1), var(--metal2));
       box-shadow: 0 10px 18px rgba(0,0,0,.28);
       cursor:pointer;
       font-weight:900;
       color: rgba(0,0,0,.65);
       user-select:none;
+      font-size: 14px;
     }
     .btn:active{ transform: translateY(1px); }
+
     .playBtn{
       border-radius: 999px;
       padding: 12px 16px;
       border: 2px solid rgba(179,13,13,.40);
-      position:relative;
     }
 
     .smallBtns{
@@ -321,20 +358,19 @@
       gap: 8px;
     }
     .mini{
-      width: 44px; height: 44px;
+      width: 48px; height: 48px;
       border-radius: 999px;
       display:grid;
       place-items:center;
       padding:0;
+      font-size: 16px;
     }
     .toggleOn{
       outline: 3px solid rgba(179,13,13,.15);
     }
 
-    /* --- PROGRESS --- */
-    .progressWrap{
-      margin-top: 4px;
-    }
+    /* ===================== PROGRESS ===================== */
+    .progressWrap{ margin-top: 2px; }
     .bar{
       height: 10px;
       border-radius: 999px;
@@ -356,7 +392,7 @@
       user-select:none;
     }
 
-    /* --- BOTTOM --- */
+    /* ===================== BOTTOM ===================== */
     .bottomRow{
       display:flex;
       justify-content:space-between;
@@ -377,20 +413,24 @@
       border: 1px solid rgba(0,0,0,.35);
       user-select:none;
     }
-    input[type="range"]{ width: 160px; }
+    input[type="range"]{ width: 180px; }
+    @media (min-width: 980px){
+      input[type="range"]{ width: 160px; }
+    }
+
     .link{
       color: rgba(255,255,255,.78);
       text-decoration: none;
       border-bottom: 1px dashed rgba(255,255,255,.35);
     }
 
-    /* --- PLAYLIST "SONG BOOK" --- */
+    /* ===================== PLAYLIST ===================== */
     .book{
       border-radius: 18px;
       background: linear-gradient(180deg, #fffaf0, #f2eadc);
       border: 1px solid rgba(0,0,0,.12);
-      box-shadow: 0 18px 45px rgba(0,0,0,.14);
-      padding: 16px;
+      box-shadow: 0 16px 38px rgba(0,0,0,.12);
+      padding: 14px;
     }
     .book h2{
       margin: 0 0 10px;
@@ -398,6 +438,7 @@
       letter-spacing:.12em;
       text-transform:uppercase;
       color: rgba(0,0,0,.68);
+      user-select:none;
     }
     .list{
       margin:0;
@@ -405,9 +446,12 @@
       list-style:none;
       display:grid;
       gap: 8px;
-      max-height: 520px;
+      max-height: 380px; /* mobil */
       overflow:auto;
       padding-right: 6px;
+    }
+    @media (min-width: 980px){
+      .list{ max-height: 560px; }
     }
     .item{
       display:flex;
@@ -448,6 +492,14 @@
       overflow:hidden;
       text-overflow:ellipsis;
     }
+
+    /* lille note */
+    .note{
+      margin-top:10px;
+      font-size:12px;
+      color: rgba(0,0,0,.55);
+      line-height:1.35;
+    }
   </style>
 </head>
 
@@ -459,9 +511,9 @@
       <div class="radioTop">
         <div class="badge">
           <div class="mark">FM</div>
-          <div>
+          <div class="badgeTxt">
             <div class="title">KOR-RADIO</div>
-            <div class="subtitle">Åbne Stemmer • Træ-kabinet</div>
+            <div class="subtitle">Åbne Stemmer • Træ + stof</div>
           </div>
         </div>
         <button class="helpBtn" id="btnHelp" title="Hjælp">?</button>
@@ -533,29 +585,28 @@
     <div class="book">
       <h2>Playlist</h2>
       <ul class="list" id="list"></ul>
-      <div style="margin-top:10px;font-size:12px;color:rgba(0,0,0,.55);">
+      <div class="note">
         Klik et nummer for at vælge. Når et nummer slutter, går den videre.
+        Autoplay med lyd kræver normalt et klik på ▶ Start.
       </div>
     </div>
 
   </div>
 
 <script>
-  // --- DIN PLAYLIST (filnavne matcher din audio-mappe på GitHub) ---
-const TRACKS = [
-  { title: "1. 21-4",                     artist: "Åbne Stemmer", url: "01-21-4.mp3" },
-  { title: "2. Weather With You",         artist: "Åbne Stemmer", url: "02-weather-with-you.mp3" },
-  { title: "3. Fragile",                  artist: "Åbne Stemmer", url: "03-fragile.mp3" },
-  { title: "4. Ordinary World",           artist: "Åbne Stemmer", url: "04-Ordinary-World.mp3" },
-  { title: "5. Det kun vigtigt",          artist: "Åbne Stemmer", url: "05-det-kun-vigtigt-hvad-det-er.mp3" },
-  { title: "6. Frit Land",                artist: "Åbne Stemmer", url: "06-frit-land.mp3" },
-  { title: "7. I morgen er der osse en dag", artist: "Åbne Stemmer", url: "07-imorgen-er-der-osse-en-dag.mp3" },
-  { title: "8. Africa",                   artist: "Åbne Stemmer", url: "08-africa.mp3" },
-  { title: "9. Afterglow",                artist: "Åbne Stemmer", url: "09-afterglow.mp3" }
-];
+  // MP3-filerne ligger i roden (samme mappe som index.html) ifølge dit screenshot.
+  const TRACKS = [
+    { title: "1. 21-4",                       artist: "Åbne Stemmer", url: "01-21-4.mp3" },
+    { title: "2. Weather With You",           artist: "Åbne Stemmer", url: "02-weather-with-you.mp3" },
+    { title: "3. Fragile",                    artist: "Åbne Stemmer", url: "03-fragile.mp3" },
+    { title: "4. Ordinary World",             artist: "Åbne Stemmer", url: "04-Ordinary-World.mp3" },
+    { title: "5. Det kun vigtigt (hvad det er)", artist: "Åbne Stemmer", url: "05-det-kun-vigtigt-hvad-det-er.mp3" },
+    { title: "6. Frit Land",                  artist: "Åbne Stemmer", url: "06-frit-land.mp3" },
+    { title: "7. I morgen er der osse en dag", artist: "Åbne Stemmer", url: "07-imorgen-er-der-osse-en-dag.mp3" },
+    { title: "8. Africa",                     artist: "Åbne Stemmer", url: "08-africa.mp3" },
+    { title: "9. Afterglow",                  artist: "Åbne Stemmer", url: "09-afterglow.mp3" }
+  ];
 
-
-  // --- ELEMENTS ---
   const el = (id)=>document.getElementById(id);
   const audio = el("audio");
   const listEl = el("list");
@@ -613,21 +664,19 @@ const TRACKS = [
   }
 
   function moveNeedle(){
-    // kosmetisk: flyt nål + “frekvens” 88..108
     const pct = (index / Math.max(1, TRACKS.length - 1)); // 0..1
-    const leftPx = 12; // start i dialGlass
-    const rightPad = 12;
-    // dialNeedle ligger i dialGlass med padding 12, så vi bruger calc
-    dialNeedle.style.left = `calc(${leftPx}px + ${pct} * (100% - ${leftPx + rightPad}px))`;
-    const freq = 88 + pct * 20; // 88..108
+    // flyt nålen over dialen
+    dialNeedle.style.left = `calc(12px + ${pct} * (100% - 24px))`;
+    // vis pseudo-frekvens 88..108
+    const freq = 88 + pct * 20;
     freqReadout.textContent = freq.toFixed(1);
   }
 
   function load(i, autoplay=false){
     index = (i + TRACKS.length) % TRACKS.length;
     const t = TRACKS[index];
-    audio.src = t.url;
 
+    audio.src = t.url;
     nowName.textContent = t.title;
     nowMeta.textContent = t.artist || "";
     openTrack.href = t.url;
@@ -635,8 +684,8 @@ const TRACKS = [
     setActive();
     moveNeedle();
 
-    btnPlay.textContent = "▶ Start";
-    statusHint.textContent = "Tryk ▶ Start (autoplay kan være blokeret i browseren).";
+    if (audio.paused) btnPlay.textContent = "▶ Start";
+    statusHint.textContent = "Tryk ▶ Start (autoplay kræver normalt et klik).";
 
     if (autoplay){
       audio.play().then(()=>{
@@ -661,12 +710,13 @@ const TRACKS = [
 
   btnPlay.addEventListener("click", ()=>{
     if (!audio.src) load(index, false);
+
     if (audio.paused){
       audio.play().then(()=>{
         btnPlay.textContent = "⏸ Pause";
         statusHint.textContent = isShuffle ? "Shuffle tændt — radio-feeling!" : "Afspiller i rækkefølge.";
       }).catch(()=>{
-        statusHint.textContent = "Kunne ikke starte. Tjek at dine links er direkte lydfiler (.mp3).";
+        statusHint.textContent = "Kunne ikke starte. Tjek at mp3-filerne kan åbnes direkte.";
       });
     } else {
       audio.pause();
@@ -723,8 +773,8 @@ const TRACKS = [
 - Shuffle giver radio-feeling.
 
 Hvis afspilning fejler:
-- Tjek at mp3-links virker direkte i browseren.
-- Filnavne (store/små bogstaver + mellemrum) skal matche 1:1.`
+- Klik “Åbn fil” og se om MP3’en åbner direkte.
+- Filnavne skal matche 1:1.`
     );
   });
 
@@ -734,3 +784,4 @@ Hvis afspilning fejler:
 </script>
 </body>
 </html>
+
