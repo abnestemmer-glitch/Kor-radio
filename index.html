@@ -3,428 +3,539 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Kor-radio</title>
+  <title>His Master’s Open Voices – Kor-radio</title>
   <style>
     :root{
-      --wood1:#8a5a34;
-      --wood2:#6f4324;
-      --wood3:#5b341a;
+      --bg:#f3efe7;
+      --wood1:#8a5632;
+      --wood2:#6f4022;
+      --wood3:#5a3118;
 
-      --beige1:#f2e6d2;
-      --beige2:#e6d7bd;
+      --frame:#f1eef2;
+      --frame2:#ded8dc;
 
-      --metal1:#e3ddd2;
-      --metal2:#bfb6a6;
+      --glass1:#e7e1d6;
+      --glass2:#cfc6b6;
 
-      --ink:#1f1a14;
-      --muted:#5b4a3b;
-      --accent:#b30d0d;
+      --speaker1:#d8c49b;
+      --speaker2:#c9b07c;
 
-      --shadow: 0 22px 55px rgba(0,0,0,.22);
-      --shadow2: inset 0 14px 30px rgba(0,0,0,.35);
-      --radius: 18px;
+      --ink:#1a1410;
+      --muted:#6a5a4c;
+
+      --accent:#9c1b1b;
+      --shadow: 0 20px 50px rgba(0,0,0,.22);
+      --shadow2: inset 0 10px 24px rgba(0,0,0,.18);
+
+      --r: 22px;
     }
 
     *{ box-sizing:border-box; }
-    html,body{ height:100%; }
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color:var(--ink);
-      background:
-        radial-gradient(1200px 600px at 20% 10%, #fff, transparent 60%),
-        radial-gradient(1200px 600px at 80% 20%, #f7f1e6, transparent 60%),
-        linear-gradient(180deg, #fbf7ef, #f1eadc);
+      background: radial-gradient(1200px 600px at 30% 0%, #fff, transparent 60%),
+                  linear-gradient(180deg, #fbf7ef, var(--bg));
+      color: var(--ink);
       padding: 14px;
       display:flex;
       justify-content:center;
     }
 
-    /* мобил-first: radio over, playlist under */
+    /* Mobile-first layout */
     .wrap{
-      width:min(1100px, 100%);
+      width:min(980px, 100%);
       display:grid;
       grid-template-columns: 1fr;
       gap: 14px;
       align-items:start;
     }
 
-    /* desktop: 2 kolonner */
     @media (min-width: 980px){
-      body{ padding: 26px; }
+      body{ padding: 22px; }
       .wrap{
         grid-template-columns: 1.25fr .75fr;
         gap: 18px;
       }
     }
 
-    /* ===================== RADIO CABINET ===================== */
-    .radio{
-      border-radius: 22px;
+    /* ===== RADIO CABINET ===== */
+    .cabinet{
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.18), transparent 45%),
+        linear-gradient(135deg, var(--wood1), var(--wood2) 55%, var(--wood3));
+      border: 1px solid rgba(0,0,0,.25);
       box-shadow: var(--shadow);
       position:relative;
       overflow:hidden;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.18), transparent 40%),
-        linear-gradient(90deg, rgba(255,255,255,.06), transparent 30%),
-        linear-gradient(135deg, var(--wood1), var(--wood2) 55%, var(--wood3));
-      border: 1px solid rgba(0,0,0,.22);
       padding: 14px;
     }
 
-    /* træstruktur */
-    .radio::before{
+    /* wood grain overlay */
+    .cabinet::before{
       content:"";
       position:absolute; inset:0;
       background:
         repeating-linear-gradient(90deg,
-          rgba(0,0,0,.06) 0 2px,
+          rgba(0,0,0,.05) 0 2px,
           rgba(255,255,255,.02) 2px 6px,
-          rgba(0,0,0,.03) 6px 10px);
+          rgba(0,0,0,.03) 6px 11px);
       opacity:.35;
       mix-blend-mode:multiply;
       pointer-events:none;
     }
-    .radio::after{
-      content:"";
-      position:absolute; inset:10px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.18);
-      pointer-events:none;
-    }
 
-    .radioTop{
+    .radioInner{
       position:relative;
       z-index:1;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(0,0,0,.04));
+      border: 1px solid rgba(255,255,255,.18);
+      padding: 12px;
+    }
+
+    /* Top row: little title + power */
+    .topBar{
       display:flex;
-      justify-content:space-between;
       align-items:center;
+      justify-content:space-between;
       gap: 10px;
-      padding-bottom: 10px;
+      margin-bottom: 10px;
+      user-select:none;
+    }
+    .brandPill{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(0,0,0,.18);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.25);
+      min-width:0;
     }
     .badge{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      padding: 10px 12px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(0,0,0,.18);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.18);
-      user-select:none;
-      min-width: 0;
-    }
-    .mark{
-      width: 38px; height: 38px;
+      width: 32px; height: 32px;
       border-radius: 10px;
-      background: linear-gradient(180deg, var(--metal1), var(--metal2));
-      border: 1px solid rgba(0,0,0,.25);
+      background: linear-gradient(180deg, var(--frame), var(--frame2));
+      border: 1px solid rgba(0,0,0,.22);
       display:grid;
       place-items:center;
-      font-weight:900;
+      font-weight: 900;
+      color: rgba(0,0,0,.62);
       letter-spacing:.08em;
-      color: rgba(0,0,0,.60);
-      text-shadow: 0 1px 0 rgba(255,255,255,.45);
+      text-shadow: 0 1px 0 rgba(255,255,255,.55);
       flex:0 0 auto;
     }
-    .badgeTxt{ min-width:0; }
-    .title{
-      margin:0;
-      font-weight:900;
-      letter-spacing:.18em;
-      font-size: 13px;
-      color: rgba(255,255,255,.88);
+    .brandTxt{ min-width:0; }
+    .brandTxt b{
+      display:block;
+      font-size: 12px;
+      letter-spacing:.16em;
       text-transform:uppercase;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      color: rgba(255,255,255,.88);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
-    .subtitle{
-      margin:4px 0 0;
+    .brandTxt span{
+      display:block;
       font-size: 12px;
       color: rgba(255,255,255,.70);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
 
-    .helpBtn{
-      width: 40px; height: 40px;
+    .powerBtn{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 8px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(0,0,0,.25);
-      background: linear-gradient(180deg, var(--metal1), var(--metal2));
-      box-shadow: 0 10px 18px rgba(0,0,0,.25);
+      border: 1px solid rgba(0,0,0,.20);
+      background: linear-gradient(180deg, var(--frame), var(--frame2));
+      box-shadow: 0 10px 18px rgba(0,0,0,.22);
       cursor:pointer;
-      font-weight:900;
-      color: rgba(0,0,0,.65);
       user-select:none;
-      flex:0 0 auto;
+      font-weight: 900;
+      color: rgba(0,0,0,.68);
     }
-    .helpBtn:active{ transform: translateY(1px); }
+    .powerDot{
+      width: 10px; height: 10px; border-radius:999px;
+      background: rgba(0,0,0,.25);
+      box-shadow: inset 0 2px 6px rgba(0,0,0,.25);
+    }
+    .powerOn .powerDot{
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(156,27,27,.15), 0 8px 18px rgba(156,27,27,.28);
+    }
 
-    /* Mobil-first: speaker over panel */
-    .radioBody{
-      position:relative;
-      z-index:1;
+    /* Windows row */
+    .windows{
       display:grid;
       grid-template-columns: 1fr;
       gap: 12px;
     }
-
-    /* Desktop: speaker + panel side-by-side */
-    @media (min-width: 980px){
-      .radio{ padding: 18px; }
-      .radioBody{
-        grid-template-columns: 1.05fr 1fr;
-        gap: 16px;
-      }
+    @media (min-width: 640px){
+      .windows{ grid-template-columns: 1fr 1fr; }
     }
 
-    /* ===================== SPEAKER ===================== */
-    .speaker{
-      border-radius: var(--radius);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.10), transparent 45%),
-        linear-gradient(180deg, #3b2818, #2a1b10);
-      border: 1px solid rgba(0,0,0,.35);
-      padding: 12px;
-      box-shadow: var(--shadow2);
-    }
-    .cloth{
-      border-radius: 14px;
-      min-height: 160px;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,.12), transparent 40%),
-        radial-gradient(circle at 80% 30%, rgba(0,0,0,.20), transparent 55%),
-        repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 1px, rgba(255,255,255,.04) 1px 5px),
-        repeating-linear-gradient(90deg, rgba(0,0,0,.10) 0 1px, rgba(255,255,255,.03) 1px 6px),
-        linear-gradient(180deg, var(--beige1), var(--beige2));
-      border: 1px solid rgba(0,0,0,.22);
-      box-shadow: inset 0 10px 22px rgba(0,0,0,.18);
-    }
-    @media (min-width: 980px){
-      .cloth{ min-height: 260px; }
-    }
-
-    .speakerFooter{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-top: 10px;
-      color: rgba(255,255,255,.70);
-      font-size: 11px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      user-select:none;
-      gap: 8px;
-      flex-wrap:wrap;
-    }
-    .modelTag{
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(0,0,0,.25);
-    }
-
-    /* ===================== PANEL ===================== */
-    .panel{
-      border-radius: var(--radius);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.16), rgba(0,0,0,.08)),
-        linear-gradient(180deg, #2b2118, #1f1812);
-      border: 1px solid rgba(0,0,0,.35);
-      box-shadow: inset 0 12px 26px rgba(0,0,0,.35);
-      padding: 12px;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-    }
-    @media (min-width: 980px){
-      .panel{ padding: 14px; gap: 12px; }
-    }
-
-    .dialGlass{
-      border-radius: 14px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.14)),
-        linear-gradient(180deg, #e9e2d6, #cfc5b5);
-      border: 1px solid rgba(0,0,0,.28);
-      box-shadow:
-        inset 0 2px 0 rgba(255,255,255,.45),
-        inset 0 -14px 24px rgba(0,0,0,.12);
-      padding: 10px 12px;
+    .windowFrame{
+      border-radius: 20px;
+      background: linear-gradient(180deg, var(--frame), var(--frame2));
+      border: 1px solid rgba(0,0,0,.20);
+      box-shadow: inset 0 2px 0 rgba(255,255,255,.45);
+      padding: 10px;
       position:relative;
       overflow:hidden;
-      user-select:none;
     }
-    .dialGlass::before{
+
+    .windowInset{
+      border-radius: 16px;
+      border: 1px solid rgba(0,0,0,.18);
+      box-shadow: inset 0 10px 22px rgba(0,0,0,.10);
+      overflow:hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,.35), rgba(0,0,0,.06));
+    }
+
+    /* Left: speaker + logo */
+    .speaker{
+      min-height: 190px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.16), transparent 45%),
+        repeating-linear-gradient(0deg, rgba(0,0,0,.12) 0 1px, rgba(255,255,255,.05) 1px 6px),
+        repeating-linear-gradient(90deg, rgba(0,0,0,.08) 0 1px, rgba(255,255,255,.03) 1px 7px),
+        linear-gradient(180deg, var(--speaker1), var(--speaker2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 14px;
+      position:relative;
+    }
+
+    .logoPlate{
+      width: 92%;
+      max-width: 360px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(0,0,0,.18);
+      box-shadow: inset 0 2px 0 rgba(255,255,255,.25);
+      padding: 10px 12px;
+      position:relative;
+    }
+
+    .logoPlate::before{
       content:"";
       position:absolute;
-      inset:-40px -60px auto auto;
-      width:220px; height:140px;
-      transform:rotate(18deg);
-      background: linear-gradient(180deg, rgba(255,255,255,.55), transparent);
+      inset: -10px -18px auto auto;
+      width: 160px; height: 90px;
+      background: linear-gradient(180deg, rgba(255,255,255,.35), transparent);
+      transform: rotate(18deg);
       opacity:.35;
       pointer-events:none;
     }
-    .dialRow{
+
+    .logoText{
+      font-family: "Georgia", "Times New Roman", serif;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-weight: 800;
+      font-size: 14px;
+      color: rgba(0,0,0,.65);
+      text-align:center;
+      text-shadow: 0 1px 0 rgba(255,255,255,.35);
+      line-height:1.2;
+    }
+    .logoSub{
+      margin-top: 6px;
+      font-family: "Georgia", "Times New Roman", serif;
+      letter-spacing:.12em;
+      font-size: 11px;
+      color: rgba(0,0,0,.55);
+      text-align:center;
+    }
+
+    .logoOrn{
+      margin-top: 8px;
+      height: 12px;
+      position:relative;
+      opacity:.65;
+    }
+    .logoOrn::before,
+    .logoOrn::after{
+      content:"";
+      position:absolute;
+      top:50%;
+      width: 42%;
+      height: 2px;
+      background: rgba(0,0,0,.45);
+      transform: translateY(-50%);
+    }
+    .logoOrn::before{ left:0; }
+    .logoOrn::after{ right:0; }
+    .logoOrn span{
+      position:absolute;
+      left:50%; top:50%;
+      transform: translate(-50%,-50%);
+      width: 12px; height: 12px;
+      border: 2px solid rgba(0,0,0,.45);
+      border-radius: 999px;
+    }
+
+    /* Right: tuner scale */
+    .tuner{
+      min-height: 190px;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(255,255,255,.35), transparent 55%),
+        linear-gradient(180deg, var(--glass1), var(--glass2));
+      padding: 10px 12px;
+      position:relative;
+      user-select:none;
+    }
+
+    .tunerTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 10px;
+      font-family: "Georgia", "Times New Roman", serif;
+      font-size: 11px;
+      letter-spacing:.10em;
+      color: rgba(0,0,0,.58);
+      text-transform:uppercase;
+    }
+    .tunerMid{
+      margin-top: 10px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(0,0,0,.18);
+      padding: 10px;
+      position:relative;
+      overflow:hidden;
+    }
+    .scale{
       display:flex;
       justify-content:space-between;
       font-size: 12px;
-      color: rgba(0,0,0,.65);
-      font-weight:800;
-      letter-spacing:.06em;
+      font-weight: 900;
+      letter-spacing:.08em;
+      color: rgba(0,0,0,.62);
     }
-    .dialNeedle{
+    .ticks{
+      margin-top: 8px;
+      height: 18px;
+      background:
+        repeating-linear-gradient(90deg, rgba(0,0,0,.55) 0 1px, transparent 1px 8px);
+      opacity:.55;
+      border-radius: 6px;
+    }
+    .needle{
       position:absolute;
-      top: 10px;
-      bottom: 10px;
+      top: 8px;
+      bottom: 8px;
       width: 2px;
-      left: 12px;
+      left: 10px;
       background: var(--accent);
       box-shadow: 0 0 0 1px rgba(255,255,255,.55);
       border-radius: 2px;
+      pointer-events:none;
     }
-    .freqLabel{
-      margin-top: 6px;
-      font-size: 11px;
-      color: rgba(0,0,0,.55);
-      letter-spacing:.18em;
-      text-transform:uppercase;
+    .tunerBottom{
       display:flex;
       justify-content:space-between;
-      gap:10px;
+      align-items:center;
+      gap: 10px;
+      margin-top: 10px;
+      font-size: 11px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color: rgba(0,0,0,.58);
+      font-family: "Georgia", "Times New Roman", serif;
     }
 
-    .nowBox{
-      color: rgba(255,255,255,.92);
-      padding: 4px 2px 0;
-      min-height: 86px;
+    /* Controls: knobs */
+    .knobs{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
     }
-    .nowName{
-      font-weight:900;
-      font-size: 16px;
-      letter-spacing:.02em;
-      line-height:1.15;
-    }
-    .nowMeta{
-      font-size: 12px;
-      color: rgba(255,255,255,.70);
-      margin-top: 4px;
-      line-height:1.25;
-    }
-    .status{
-      font-size: 12px;
-      color: rgba(255,255,255,.65);
-      margin-top: 8px;
-      line-height:1.25;
+    @media (min-width: 640px){
+      .knobs{ grid-template-columns: 1fr; }
     }
 
-    /* ===================== CONTROLS ===================== */
-    .controls{
+    .controlRow{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap: 10px;
       flex-wrap:wrap;
     }
-    .knobCluster{
+
+    .now{
+      min-width: 0;
+      flex: 1 1 auto;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(0,0,0,.18);
+      color: rgba(255,255,255,.88);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.20);
+    }
+    .now b{
+      display:block;
+      font-size: 14px;
+      letter-spacing:.02em;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .now small{
+      display:block;
+      margin-top:4px;
+      font-size: 12px;
+      color: rgba(255,255,255,.70);
+      line-height:1.2;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .status{
+      margin-top: 8px;
+      font-size: 12px;
+      color: rgba(255,255,255,.68);
+    }
+
+    .buttons{
       display:flex;
       gap: 10px;
       align-items:center;
+      flex-wrap:wrap;
     }
+
     .btn{
-      border: 1px solid rgba(0,0,0,.35);
-      border-radius: 16px;
-      padding: 12px 14px;
-      background: linear-gradient(180deg, var(--metal1), var(--metal2));
-      box-shadow: 0 10px 18px rgba(0,0,0,.28);
+      border: 1px solid rgba(0,0,0,.22);
+      background: linear-gradient(180deg, var(--frame), var(--frame2));
+      box-shadow: 0 10px 18px rgba(0,0,0,.22);
       cursor:pointer;
-      font-weight:900;
-      color: rgba(0,0,0,.65);
       user-select:none;
-      font-size: 14px;
+      color: rgba(0,0,0,.70);
+      font-weight: 900;
     }
     .btn:active{ transform: translateY(1px); }
-
-    .playBtn{
-      border-radius: 999px;
-      padding: 12px 16px;
-      border: 2px solid rgba(179,13,13,.40);
-    }
-
-    .smallBtns{
-      display:flex;
-      gap: 8px;
-    }
-    .mini{
-      width: 48px; height: 48px;
+    .btnRound{
+      width: 52px; height: 52px;
       border-radius: 999px;
       display:grid;
       place-items:center;
-      padding:0;
       font-size: 16px;
     }
+    .btnPlay{
+      padding: 12px 14px;
+      border-radius: 999px;
+      border: 2px solid rgba(156,27,27,.32);
+      font-size: 14px;
+    }
     .toggleOn{
-      outline: 3px solid rgba(179,13,13,.15);
+      outline: 3px solid rgba(156,27,27,.14);
     }
 
-    /* ===================== PROGRESS ===================== */
-    .progressWrap{ margin-top: 2px; }
+    .knobStrip{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .knob{
+      border-radius: 999px;
+      aspect-ratio: 1/1;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.55), transparent 55%),
+                  linear-gradient(180deg, var(--frame), var(--frame2));
+      border: 1px solid rgba(0,0,0,.22);
+      box-shadow: 0 16px 26px rgba(0,0,0,.20), inset 0 2px 0 rgba(255,255,255,.45);
+      position:relative;
+      display:grid;
+      place-items:center;
+      user-select:none;
+    }
+    .knob::after{
+      content:"";
+      width: 3px; height: 38%;
+      background: rgba(0,0,0,.45);
+      border-radius: 2px;
+      position:absolute;
+      top: 12%;
+      box-shadow: 0 1px 0 rgba(255,255,255,.35);
+      opacity:.85;
+      transform: rotate(var(--ang, -25deg));
+      transform-origin: center 70%;
+    }
+    .knobLabel{
+      position:absolute;
+      bottom: -22px;
+      left:50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.72);
+      user-select:none;
+      white-space:nowrap;
+    }
+
+    .progressWrap{
+      margin-top: 10px;
+    }
     .bar{
       height: 10px;
       border-radius: 999px;
-      background: rgba(255,255,255,.14);
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(0,0,0,.18);
       overflow:hidden;
-      border: 1px solid rgba(0,0,0,.35);
     }
     .bar > div{
       height:100%;
       width:0%;
-      background: linear-gradient(90deg, rgba(179,13,13,.75), rgba(179,13,13,.20));
+      background: linear-gradient(90deg, rgba(156,27,27,.75), rgba(156,27,27,.20));
     }
     .timeRow{
+      margin-top: 6px;
       display:flex;
       justify-content:space-between;
       font-size: 12px;
-      color: rgba(255,255,255,.65);
-      margin-top: 6px;
+      color: rgba(255,255,255,.70);
       user-select:none;
     }
 
-    /* ===================== BOTTOM ===================== */
     .bottomRow{
       display:flex;
-      justify-content:space-between;
       align-items:center;
+      justify-content:space-between;
       gap: 10px;
       flex-wrap:wrap;
-      color: rgba(255,255,255,.70);
+      margin-top: 10px;
+      color: rgba(255,255,255,.72);
       font-size: 12px;
-      margin-top: 2px;
     }
-    .vol{
+
+    .volPill{
       display:flex;
       align-items:center;
-      gap: 10px;
+      gap:10px;
       padding: 8px 10px;
       border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(0,0,0,.35);
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(0,0,0,.18);
       user-select:none;
     }
     input[type="range"]{ width: 180px; }
-    @media (min-width: 980px){
-      input[type="range"]{ width: 160px; }
-    }
 
     .link{
       color: rgba(255,255,255,.78);
-      text-decoration: none;
+      text-decoration:none;
       border-bottom: 1px dashed rgba(255,255,255,.35);
     }
 
-    /* ===================== PLAYLIST ===================== */
+    /* ===== PLAYLIST ===== */
     .book{
       border-radius: 18px;
       background: linear-gradient(180deg, #fffaf0, #f2eadc);
@@ -433,20 +544,19 @@
       padding: 14px;
     }
     .book h2{
-      margin: 0 0 10px;
+      margin:0 0 10px;
       font-size: 14px;
       letter-spacing:.12em;
       text-transform:uppercase;
-      color: rgba(0,0,0,.68);
-      user-select:none;
+      color: rgba(0,0,0,.65);
     }
     .list{
       margin:0;
       padding:0;
       list-style:none;
       display:grid;
-      gap: 8px;
-      max-height: 380px; /* mobil */
+      gap:8px;
+      max-height: 360px; /* mobile */
       overflow:auto;
       padding-right: 6px;
     }
@@ -465,40 +575,53 @@
       user-select:none;
     }
     .dot{
-      width: 10px; height: 10px;
-      border-radius: 999px;
-      background: rgba(0,0,0,.20);
+      width:10px; height:10px; border-radius:999px;
+      background: rgba(0,0,0,.22);
       flex:0 0 auto;
     }
     .item.active{
-      background: rgba(179,13,13,.10);
-      border-color: rgba(179,13,13,.22);
+      background: rgba(156,27,27,.10);
+      border-color: rgba(156,27,27,.22);
     }
     .item.active .dot{
       background: var(--accent);
-      box-shadow: 0 6px 14px rgba(179,13,13,.22);
+      box-shadow: 0 6px 14px rgba(156,27,27,.22);
     }
     .itemTitle{
-      font-weight:900;
+      font-weight: 900;
       font-size: 13px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
     .itemSub{
       font-size: 12px;
       color: rgba(0,0,0,.55);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
 
-    /* lille note */
     .note{
       margin-top:10px;
       font-size:12px;
       color: rgba(0,0,0,.55);
       line-height:1.35;
+    }
+
+    /* Power-off dim state */
+    .off .radioInner{
+      filter: saturate(.7) contrast(.95);
+    }
+    .off .now,
+    .off .status,
+    .off .progressWrap,
+    .off .bottomRow{
+      opacity:.65;
+    }
+    .off .needle,
+    .off .dialNeedle{
+      opacity:.45;
+    }
+    .off .btn,
+    .off .knob{
+      filter: grayscale(.25);
     }
   </style>
 </head>
@@ -507,67 +630,88 @@
   <div class="wrap">
 
     <!-- RADIO -->
-    <div class="radio">
-      <div class="radioTop">
-        <div class="badge">
-          <div class="mark">FM</div>
-          <div class="badgeTxt">
-            <div class="title">KOR-RADIO</div>
-            <div class="subtitle">Åbne Stemmer • sortemosen lokalradio</div>
-          </div>
-        </div>
-        <button class="helpBtn" id="btnHelp" title="Hjælp">?</button>
-      </div>
+    <div class="cabinet off" id="cabinet">
+      <div class="radioInner">
 
-      <div class="radioBody">
-        <div class="speaker">
-          <div class="cloth"></div>
-          <div class="speakerFooter">
-            <span class="modelTag">TRANSISTOR</span>
-            <span class="modelTag">SOLID STATE</span>
+        <div class="topBar">
+          <div class="brandPill">
+            <div class="badge">FM</div>
+            <div class="brandTxt">
+              <b>Kor-radio</b>
+              <span>His Master’s Open Voices</span>
+            </div>
           </div>
+
+          <button class="powerBtn" id="btnPower" type="button" aria-pressed="false" title="Tænd / sluk">
+            <span class="powerDot" id="powerDot"></span>
+            <span id="powerLabel">OFF</span>
+          </button>
         </div>
 
-        <div class="panel">
-          <div class="dialGlass">
-            <div class="dialRow">
-              <span>88</span><span>92</span><span>96</span><span>100</span><span>104</span><span>108</span>
-            </div>
-            <div class="dialNeedle" id="dialNeedle"></div>
-            <div class="freqLabel">
-              <span>FM MHz</span>
-              <span id="freqReadout">96.0</span>
+        <div class="windows">
+
+          <!-- LEFT: SPEAKER + LOGO -->
+          <div class="windowFrame">
+            <div class="windowInset speaker" aria-label="Højttaler og logo">
+              <div class="logoPlate">
+                <div class="logoText">HIS MASTER’S<br/>OPEN VOICES</div>
+                <div class="logoOrn"><span></span></div>
+                <div class="logoSub">Åbne Stemmer • Allerød</div>
+              </div>
             </div>
           </div>
 
-          <div class="nowBox">
-            <div class="nowName" id="nowName">Ikke startet endnu</div>
-            <div class="nowMeta" id="nowMeta">Tryk ▶ Start for at spille</div>
-            <div class="status" id="statusHint">Tip: Shuffle giver “radio-feeling”.</div>
+          <!-- RIGHT: TUNER -->
+          <div class="windowFrame">
+            <div class="windowInset tuner" aria-label="Tuner">
+              <div class="tunerTop">
+                <span>Program / Skala</span>
+                <span id="freqReadout">96.0 MHz</span>
+              </div>
+
+              <div class="tunerMid">
+                <div class="scale">
+                  <span>88</span><span>92</span><span>96</span><span>100</span><span>104</span><span>108</span>
+                </div>
+                <div class="ticks"></div>
+                <div class="needle" id="dialNeedle"></div>
+              </div>
+
+              <div class="tunerBottom">
+                <span>VOL</span>
+                <span>SINTONIA</span>
+                <span>GAMMA</span>
+              </div>
+            </div>
           </div>
 
-          <div class="controls">
-            <div class="knobCluster">
-              <button class="btn" id="btnPrev" title="Forrige">⟵</button>
-              <button class="btn playBtn" id="btnPlay" title="Afspil/Pause">▶ Start</button>
-              <button class="btn" id="btnNext" title="Næste">⟶</button>
+        </div>
+
+        <!-- Controls + Now Playing -->
+        <div class="knobs">
+          <div class="controlRow">
+            <div class="now" id="nowBox">
+              <b id="nowName">Slukket</b>
+              <small id="nowMeta">Tryk ON for at tænde</small>
+              <div class="status" id="statusHint">Tip: Shuffle giver “radio-feeling”.</div>
             </div>
-            <div class="smallBtns">
-              <button class="btn mini" id="btnShuffle" title="Shuffle">🔀</button>
-              <button class="btn mini toggleOn" id="btnLoop" title="Loop">🔁</button>
+
+            <div class="buttons">
+              <button class="btn btnRound" id="btnPrev" type="button" title="Forrige">⟵</button>
+              <button class="btn btnPlay" id="btnPlay" type="button" title="Afspil / Pause">▶ Start</button>
+              <button class="btn btnRound" id="btnNext" type="button" title="Næste">⟶</button>
+              <button class="btn btnRound" id="btnShuffle" type="button" title="Shuffle">🔀</button>
+              <button class="btn btnRound toggleOn" id="btnLoop" type="button" title="Loop">🔁</button>
             </div>
           </div>
 
           <div class="progressWrap">
             <div class="bar" id="bar"><div id="barFill"></div></div>
-            <div class="timeRow">
-              <span id="tCur">0:00</span>
-              <span id="tDur">0:00</span>
-            </div>
+            <div class="timeRow"><span id="tCur">0:00</span><span id="tDur">0:00</span></div>
           </div>
 
           <div class="bottomRow">
-            <div class="vol">
+            <div class="volPill">
               VOL
               <input id="vol" type="range" min="0" max="1" step="0.01" value="0.85" />
             </div>
@@ -576,8 +720,14 @@
             </div>
           </div>
 
-          <audio id="audio" preload="metadata"></audio>
+          <div class="knobStrip" aria-hidden="true">
+            <div class="knob" id="k1" style="--ang:-35deg"><span class="knobLabel">VOLUME</span></div>
+            <div class="knob" id="k2" style="--ang:-15deg"><span class="knobLabel">TUNING</span></div>
+            <div class="knob" id="k3" style="--ang:-25deg"><span class="knobLabel">TONE</span></div>
+          </div>
         </div>
+
+        <audio id="audio" preload="metadata"></audio>
       </div>
     </div>
 
@@ -586,29 +736,32 @@
       <h2>Playlist</h2>
       <ul class="list" id="list"></ul>
       <div class="note">
-        Klik et nummer for at vælge. Når et nummer slutter, går den videre.
-        Autoplay med lyd kræver normalt et klik på ▶ Start.
+        Mobil-tip: Tryk ON → vælg sang → ▶ Start. Autoplay med lyd kræver normalt et klik.
       </div>
     </div>
 
   </div>
 
 <script>
-  // MP3-filerne ligger i roden (samme mappe som index.html) ifølge dit screenshot.
-const TRACKS = [
-  { title: "1. 21-4",                     artist: "Åbne Stemmer", url: "01-21-4.mp3" },
-  { title: "2. Weather With You",         artist: "Åbne Stemmer", url: "02-weather-with-you.mp3" },
-  { title: "3. Fragile",                  artist: "Åbne Stemmer", url: "03-fragile.mp3" },
-  { title: "4. Ordinary World",           artist: "Åbne Stemmer", url: "04-Ordinary-World.mp3" },
-  { title: "5. Det kun vigtigt",          artist: "Åbne Stemmer", url: "05-det-kun-vigtigt-hvad-det-er.mp3" },
-  { title: "6. Frit Land",                artist: "Åbne Stemmer", url: "06-frit-land.mp3" },
-  { title: "7. I morgen er der osse en dag", artist: "Åbne Stemmer", url: "07-imorgen-er-der-osse-en-dag.mp3" },
-  { title: "8. Africa",                   artist: "Åbne Stemmer", url: "08-africa.mp3" },
-  { title: "9. Afterglow",                artist: "Åbne Stemmer", url: "09-afterglow.mp3" }
-];
-
+  // MP3-filerne ligger i roden (samme mappe som index.html) – som på dit screenshot.
+  const TRACKS = [
+    { title: "1. 21-4",                       artist: "Åbne Stemmer", url: "01-21-4.mp3" },
+    { title: "2. Weather With You",           artist: "Åbne Stemmer", url: "02-weather-with-you.mp3" },
+    { title: "3. Fragile",                    artist: "Åbne Stemmer", url: "03-fragile.mp3" },
+    { title: "4. Ordinary World",             artist: "Åbne Stemmer", url: "04-Ordinary-World.mp3" },
+    { title: "5. Det kun vigtigt (hvad det er)", artist: "Åbne Stemmer", url: "05-det-kun-vigtigt-hvad-det-er.mp3" },
+    { title: "6. Frit Land",                  artist: "Åbne Stemmer", url: "06-frit-land.mp3" },
+    { title: "7. I morgen er der osse en dag", artist: "Åbne Stemmer", url: "07-imorgen-er-der-osse-en-dag.mp3" },
+    { title: "8. Africa",                     artist: "Åbne Stemmer", url: "08-africa.mp3" },
+    { title: "9. Afterglow",                  artist: "Åbne Stemmer", url: "09-afterglow.mp3" }
+  ];
 
   const el = (id)=>document.getElementById(id);
+
+  const cabinet = el("cabinet");
+  const btnPower = el("btnPower");
+  const powerLabel = el("powerLabel");
+
   const audio = el("audio");
   const listEl = el("list");
   const nowName = el("nowName");
@@ -628,11 +781,14 @@ const TRACKS = [
   const openTrack = el("openTrack");
   const dialNeedle = el("dialNeedle");
   const freqReadout = el("freqReadout");
-  const btnHelp = el("btnHelp");
+
+  // decorative knobs
+  const k1 = el("k1"), k2 = el("k2"), k3 = el("k3");
 
   let index = 0;
   let isShuffle = false;
   let isLoop = true;
+  let isOn = false;
 
   function fmt(sec){
     if (!isFinite(sec) || sec < 0) return "0:00";
@@ -665,15 +821,25 @@ const TRACKS = [
   }
 
   function moveNeedle(){
-    const pct = (index / Math.max(1, TRACKS.length - 1)); // 0..1
-    // flyt nålen over dialen
-    dialNeedle.style.left = `calc(12px + ${pct} * (100% - 24px))`;
-    // vis pseudo-frekvens 88..108
+    // move needle across tuner (0..1)
+    const pct = (index / Math.max(1, TRACKS.length - 1));
+    dialNeedle.style.left = `calc(10px + ${pct} * (100% - 20px))`;
+
+    // pseudo frequency readout 88..108
     const freq = 88 + pct * 20;
-    freqReadout.textContent = freq.toFixed(1);
+    freqReadout.textContent = `${freq.toFixed(1)} MHz`;
+
+    // decorative tuning knob rotates
+    const ang = -35 + pct * 70; // -35..+35
+    k2.style.setProperty("--ang", `${ang}deg`);
   }
 
   function load(i, autoplay=false){
+    if (!isOn){
+      statusHint.textContent = "Radioen er slukket. Tryk ON først.";
+      return;
+    }
+
     index = (i + TRACKS.length) % TRACKS.length;
     const t = TRACKS[index];
 
@@ -685,9 +851,6 @@ const TRACKS = [
     setActive();
     moveNeedle();
 
-    if (audio.paused) btnPlay.textContent = "▶ Start";
-    statusHint.textContent = "Tryk ▶ Start (autoplay kræver normalt et klik).";
-
     if (autoplay){
       audio.play().then(()=>{
         btnPlay.textContent = "⏸ Pause";
@@ -695,10 +858,14 @@ const TRACKS = [
       }).catch(()=>{
         statusHint.textContent = "Klik ▶ Start for at afspille (browser kræver et klik).";
       });
+    } else {
+      btnPlay.textContent = "▶ Start";
+      statusHint.textContent = "Tryk ▶ Start (autoplay kræver normalt et klik).";
     }
   }
 
   function next(){
+    if (!isOn) return;
     if (isShuffle && TRACKS.length > 1){
       let n = index;
       while (n === index) n = Math.floor(Math.random()*TRACKS.length);
@@ -707,9 +874,133 @@ const TRACKS = [
       load(index + 1, true);
     }
   }
-  function prev(){ load(index - 1, true); }
+  function prev(){
+    if (!isOn) return;
+    load(index - 1, true);
+  }
 
+  // ===== Retro click/knas sound (Web Audio) =====
+  let AC = null;
+  function ensureAudioContext(){
+    if (!AC){
+      AC = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return AC;
+  }
+
+  function playClickNoise({on=true}){
+    const ac = ensureAudioContext();
+    const now = ac.currentTime;
+
+    // master
+    const master = ac.createGain();
+    master.gain.setValueAtTime(0.0001, now);
+    master.connect(ac.destination);
+
+    // short hiss (noise)
+    const bufferSize = Math.floor(ac.sampleRate * 0.12); // 120ms
+    const buffer = ac.createBuffer(1, bufferSize, ac.sampleRate);
+    const data = buffer.getChannelData(0);
+
+    // shaped noise: little “knas”
+    for (let i=0; i<bufferSize; i++){
+      const t = i / bufferSize;
+      // pink-ish-ish: random * (1 - t)^2
+      const r = (Math.random()*2 - 1);
+      data[i] = r * Math.pow(1 - t, 2) * 0.9;
+    }
+
+    const noise = ac.createBufferSource();
+    noise.buffer = buffer;
+
+    // bandpass to make it "radio"
+    const bp = ac.createBiquadFilter();
+    bp.type = "bandpass";
+    bp.frequency.setValueAtTime(1200, now);
+    bp.Q.setValueAtTime(0.8, now);
+
+    // click transient (osc)
+    const click = ac.createOscillator();
+    click.type = "square";
+    click.frequency.setValueAtTime(on ? 240 : 180, now);
+
+    const clickGain = ac.createGain();
+    clickGain.gain.setValueAtTime(0.0, now);
+    clickGain.gain.linearRampToValueAtTime(0.12, now + 0.005);
+    clickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.03);
+
+    // noise envelope
+    const nGain = ac.createGain();
+    nGain.gain.setValueAtTime(0.0001, now);
+    nGain.gain.linearRampToValueAtTime(on ? 0.09 : 0.07, now + 0.008);
+    nGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+
+    // slight lowpass to soften
+    const lp = ac.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.setValueAtTime(4500, now);
+
+    noise.connect(bp);
+    bp.connect(nGain);
+    nGain.connect(lp);
+    lp.connect(master);
+
+    click.connect(clickGain);
+    clickGain.connect(master);
+
+    master.gain.exponentialRampToValueAtTime(1.0, now + 0.01);
+    master.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
+
+    noise.start(now);
+    noise.stop(now + 0.13);
+
+    click.start(now);
+    click.stop(now + 0.04);
+  }
+
+  // ===== Power logic =====
+  function setPower(state){
+    isOn = state;
+
+    cabinet.classList.toggle("off", !isOn);
+    btnPower.classList.toggle("powerOn", isOn);
+    btnPower.setAttribute("aria-pressed", isOn ? "true" : "false");
+    powerLabel.textContent = isOn ? "ON" : "OFF";
+
+    if (isOn){
+      playClickNoise({on:true});
+      // set initial UI
+      nowName.textContent = TRACKS[index]?.title || "Klar";
+      nowMeta.textContent = "Vælg sang i playlisten";
+      statusHint.textContent = "Tryk ▶ Start (autoplay kræver normalt et klik).";
+      moveNeedle();
+      openTrack.href = TRACKS[index]?.url || "#";
+    } else {
+      playClickNoise({on:false});
+      audio.pause();
+      audio.currentTime = 0;
+      btnPlay.textContent = "▶ Start";
+      nowName.textContent = "Slukket";
+      nowMeta.textContent = "Tryk ON for at tænde";
+      statusHint.textContent = "Tip: Shuffle giver “radio-feeling”.";
+      barFill.style.width = "0%";
+      tCur.textContent = "0:00";
+      tDur.textContent = "0:00";
+    }
+  }
+
+  btnPower.addEventListener("click", ()=>{
+    // must be a user gesture -> safe to create AudioContext
+    ensureAudioContext();
+    setPower(!isOn);
+  });
+
+  // Playback controls
   btnPlay.addEventListener("click", ()=>{
+    if (!isOn){
+      statusHint.textContent = "Radioen er slukket. Tryk ON først.";
+      return;
+    }
     if (!audio.src) load(index, false);
 
     if (audio.paused){
@@ -717,7 +1008,7 @@ const TRACKS = [
         btnPlay.textContent = "⏸ Pause";
         statusHint.textContent = isShuffle ? "Shuffle tændt — radio-feeling!" : "Afspiller i rækkefølge.";
       }).catch(()=>{
-        statusHint.textContent = "Kunne ikke starte. Tjek at mp3-filerne kan åbnes direkte.";
+        statusHint.textContent = "Kunne ikke starte. Tjek at mp3-filer kan åbnes direkte.";
       });
     } else {
       audio.pause();
@@ -730,18 +1021,35 @@ const TRACKS = [
   btnPrev.addEventListener("click", prev);
 
   btnShuffle.addEventListener("click", ()=>{
+    if (!isOn){
+      statusHint.textContent = "Radioen er slukket. Tryk ON først.";
+      return;
+    }
     isShuffle = !isShuffle;
     btnShuffle.classList.toggle("toggleOn", isShuffle);
     statusHint.textContent = isShuffle ? "Shuffle tændt — radio-feeling!" : "Shuffle slukket — afspiller i rækkefølge.";
   });
 
   btnLoop.addEventListener("click", ()=>{
+    if (!isOn){
+      statusHint.textContent = "Radioen er slukket. Tryk ON først.";
+      return;
+    }
     isLoop = !isLoop;
     btnLoop.classList.toggle("toggleOn", isLoop);
     statusHint.textContent = isLoop ? "Loop tændt — spiller videre." : "Loop slukket — stopper efter sidste nummer.";
   });
 
+  // Progress
+  audio.addEventListener("timeupdate", ()=>{
+    const p = (audio.currentTime / (audio.duration || 1)) * 100;
+    barFill.style.width = `${Math.min(100, Math.max(0,p))}%`;
+    tCur.textContent = fmt(audio.currentTime);
+    tDur.textContent = fmt(audio.duration);
+  });
+
   audio.addEventListener("ended", ()=>{
+    if (!isOn) return;
     if (index === TRACKS.length - 1 && !isLoop && !isShuffle){
       btnPlay.textContent = "▶ Start";
       statusHint.textContent = "Færdig (loop er slukket).";
@@ -750,39 +1058,82 @@ const TRACKS = [
     next();
   });
 
-  audio.addEventListener("timeupdate", ()=>{
-    const p = (audio.currentTime / (audio.duration || 1)) * 100;
-    barFill.style.width = `${Math.min(100, Math.max(0,p))}%`;
-    tCur.textContent = fmt(audio.currentTime);
-    tDur.textContent = fmt(audio.duration);
-  });
-
   bar.addEventListener("click", (e)=>{
+    if (!isOn) return;
     const r = bar.getBoundingClientRect();
     const x = (e.clientX - r.left) / r.width;
     if (audio.duration) audio.currentTime = x * audio.duration;
   });
 
-  vol.addEventListener("input", ()=> audio.volume = parseFloat(vol.value));
+  // Volume + decorative knob rotation
+  vol.addEventListener("input", ()=>{
+    audio.volume = parseFloat(vol.value);
+    const pct = parseFloat(vol.value); // 0..1
+    const ang = -35 + pct * 70;
+    k1.style.setProperty("--ang", `${ang}deg`);
+  });
   audio.volume = parseFloat(vol.value);
 
-  btnHelp.addEventListener("click", ()=>{
-    alert(
-`Kor-radio hjælp
-- Autoplay med lyd er blokeret i de fleste browsere.
-- Klik ▶ Start for at afspille.
-- Shuffle giver radio-feeling.
-
-Hvis afspilning fejler:
-- Klik “Åbn fil” og se om MP3’en åbner direkte.
-- Filnavne skal matche 1:1.`
-    );
+  // open track
+  openTrack.addEventListener("click", (e)=>{
+    if (!openTrack.href || openTrack.href.endsWith("#")) e.preventDefault();
   });
 
-  // init
+  // Init UI
   renderList();
-  load(0, false);
+  setActive();
+  moveNeedle();
+  // Start OFF
+  setPower(false);
+
+  // Mark active item when ON and selecting
+  function setActive(){
+    [...listEl.children].forEach((li,i)=> li.classList.toggle("active", i===index));
+  }
+
+  // When user clicks a playlist item, we keep it OFF-safe in load()
+  // Also keep tone knob gently moving with track index for fun:
+  function updateToneKnob(){
+    const pct = (index / Math.max(1, TRACKS.length - 1));
+    const ang = -25 + pct * 50;
+    k3.style.setProperty("--ang", `${ang}deg`);
+  }
+  const origLoad = load;
+  load = function(i, autoplay=false){
+    index = (i + TRACKS.length) % TRACKS.length;
+    setActive();
+    updateToneKnob();
+    // call original logic using selected index
+    // restore chosen index in original function by setting it and passing through
+    if (!isOn){
+      statusHint.textContent = "Radioen er slukket. Tryk ON først.";
+      nowName.textContent = TRACKS[index].title;
+      nowMeta.textContent = "Klar når du tænder";
+      openTrack.href = TRACKS[index].url;
+      moveNeedle();
+      return;
+    }
+    // replicate original behavior
+    const t = TRACKS[index];
+    audio.src = t.url;
+    nowName.textContent = t.title;
+    nowMeta.textContent = t.artist || "";
+    openTrack.href = t.url;
+    moveNeedle();
+    if (autoplay){
+      audio.play().then(()=>{
+        btnPlay.textContent = "⏸ Pause";
+        statusHint.textContent = isShuffle ? "Shuffle tændt — radio-feeling!" : "Afspiller i rækkefølge.";
+      }).catch(()=>{
+        statusHint.textContent = "Klik ▶ Start for at afspille (browser kræver et klik).";
+      });
+    } else {
+      btnPlay.textContent = "▶ Start";
+      statusHint.textContent = "Tryk ▶ Start (autoplay kræver normalt et klik).";
+    }
+  };
+
+  updateToneKnob();
 </script>
 </body>
 </html>
-
