@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>His Master’s Open Voices – Kor-radio</title>
+  <title>His Master’s Open Voices – Kor-radio (Compact)</title>
 
   <style>
     :root{
@@ -26,7 +26,6 @@
 
       --accent:#9c1b1b;
       --shadow: 0 20px 50px rgba(0,0,0,.22);
-      --shadow2: inset 0 10px 24px rgba(0,0,0,.18);
 
       --r: 22px;
     }
@@ -39,14 +38,12 @@
       background: radial-gradient(1200px 600px at 30% 0%, #fff, transparent 60%),
                   linear-gradient(180deg, #fbf7ef, var(--bg));
       color: var(--ink);
-
-      /* Mobil-first: ingen intern scroll i radio-delen */
       padding: 12px;
       display:flex;
       justify-content:center;
     }
 
-    /* Mobile-first: radio fylder, playlist foldbar under */
+    /* Mobile-first: radio first, playlist under */
     .wrap{
       width:min(980px, 100%);
       display:grid;
@@ -73,7 +70,7 @@
       box-shadow: var(--shadow);
       position:relative;
       overflow:hidden;
-      padding: 12px;
+      padding: 10px;
     }
 
     .cabinet::before{
@@ -95,7 +92,7 @@
       border-radius: 22px;
       background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(0,0,0,.04));
       border: 1px solid rgba(255,255,255,.18);
-      padding: 12px;
+      padding: 10px;
     }
 
     .topBar{
@@ -103,7 +100,7 @@
       align-items:center;
       justify-content:space-between;
       gap: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       user-select:none;
     }
     .brandPill{
@@ -173,35 +170,34 @@
       box-shadow: 0 0 0 3px rgba(156,27,27,.15), 0 8px 18px rgba(156,27,27,.28);
     }
 
-    /* Windows: mobile -> stacked (no internal scroll) */
+    /* ===== COMPACT WINDOWS =====
+       Mobile-first: always side-by-side if possible, otherwise stacked.
+       We use small aspect ratios so they don't get too tall. */
     .windows{
       display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
-    @media (min-width: 720px){
-      .windows{ grid-template-columns: 1fr 1fr; }
+    @media (max-width: 420px){
+      .windows{ grid-template-columns: 1fr; }
     }
 
     .windowFrame{
-      border-radius: 20px;
+      border-radius: 18px;
       background: linear-gradient(180deg, var(--frame), var(--frame2));
       border: 1px solid rgba(0,0,0,.20);
       box-shadow: inset 0 2px 0 rgba(255,255,255,.45);
-      padding: 10px;
-      position:relative;
+      padding: 8px;
       overflow:hidden;
     }
-
     .windowInset{
-      border-radius: 16px;
+      border-radius: 14px;
       border: 1px solid rgba(0,0,0,.18);
       box-shadow: inset 0 10px 22px rgba(0,0,0,.10);
       overflow:hidden;
       background: linear-gradient(180deg, rgba(255,255,255,.35), rgba(0,0,0,.06));
     }
 
-    /* Left: speaker+logo */
     .speaker{
       background:
         radial-gradient(circle at 20% 20%, rgba(255,255,255,.16), transparent 45%),
@@ -211,82 +207,44 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 14px;
-      position:relative;
-      aspect-ratio: 16 / 10;  /* gør den fladere på mobil */
-      min-height: 160px;
-    }
-    @media (min-width: 720px){
-      .speaker{ aspect-ratio: auto; min-height: 190px; }
+      padding: 10px;
+      aspect-ratio: 16 / 10;
+      min-height: 120px;
     }
 
     .logoPlate{
-      width: 92%;
-      max-width: 380px;
+      width: 94%;
       border-radius: 12px;
       background: rgba(255,255,255,.18);
       border: 1px solid rgba(0,0,0,.18);
-      box-shadow: inset 0 2px 0 rgba(255,255,255,.25);
-      padding: 10px 12px;
-      position:relative;
+      padding: 8px 10px;
+      text-align:center;
     }
     .logoText{
       font-family: "Georgia", "Times New Roman", serif;
       text-transform:uppercase;
       letter-spacing:.14em;
       font-weight: 800;
-      font-size: 14px;
+      font-size: 12px;
       color: rgba(0,0,0,.65);
-      text-align:center;
-      line-height:1.2;
+      line-height:1.15;
     }
     .logoSub{
       margin-top: 6px;
       font-family: "Georgia", "Times New Roman", serif;
       letter-spacing:.12em;
-      font-size: 11px;
+      font-size: 10px;
       color: rgba(0,0,0,.55);
-      text-align:center;
-    }
-    .logoOrn{
-      margin-top: 8px;
-      height: 12px;
-      position:relative;
-      opacity:.65;
-    }
-    .logoOrn::before, .logoOrn::after{
-      content:"";
-      position:absolute;
-      top:50%;
-      width: 42%;
-      height: 2px;
-      background: rgba(0,0,0,.45);
-      transform: translateY(-50%);
-    }
-    .logoOrn::before{ left:0; }
-    .logoOrn::after{ right:0; }
-    .logoOrn span{
-      position:absolute;
-      left:50%; top:50%;
-      transform: translate(-50%,-50%);
-      width: 12px; height: 12px;
-      border: 2px solid rgba(0,0,0,.45);
-      border-radius: 999px;
     }
 
-    /* Right: tuner */
     .tuner{
       background:
         radial-gradient(circle at 15% 15%, rgba(255,255,255,.35), transparent 55%),
         linear-gradient(180deg, var(--glass1), var(--glass2));
-      padding: 10px 12px;
-      position:relative;
-      user-select:none;
+      padding: 10px;
       aspect-ratio: 16 / 10;
-      min-height: 160px;
-    }
-    @media (min-width: 720px){
-      .tuner{ aspect-ratio: auto; min-height: 190px; }
+      min-height: 120px;
+      user-select:none;
     }
 
     .tunerTop{
@@ -295,39 +253,39 @@
       align-items:center;
       gap: 10px;
       font-family: "Georgia", "Times New Roman", serif;
-      font-size: 11px;
+      font-size: 10px;
       letter-spacing:.10em;
       color: rgba(0,0,0,.58);
       text-transform:uppercase;
     }
     .tunerMid{
-      margin-top: 10px;
+      margin-top: 8px;
       border-radius: 12px;
       background: rgba(255,255,255,.18);
       border: 1px solid rgba(0,0,0,.18);
-      padding: 10px;
+      padding: 8px;
       position:relative;
       overflow:hidden;
     }
     .scale{
       display:flex;
       justify-content:space-between;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 900;
       letter-spacing:.08em;
       color: rgba(0,0,0,.62);
     }
     .ticks{
-      margin-top: 8px;
-      height: 18px;
+      margin-top: 6px;
+      height: 14px;
       background: repeating-linear-gradient(90deg, rgba(0,0,0,.55) 0 1px, transparent 1px 8px);
       opacity:.55;
       border-radius: 6px;
     }
     .needle{
       position:absolute;
-      top: 8px;
-      bottom: 8px;
+      top: 6px;
+      bottom: 6px;
       width: 2px;
       left: 10px;
       background: var(--accent);
@@ -335,22 +293,11 @@
       border-radius: 2px;
       pointer-events:none;
     }
-    .tunerBottom{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap: 10px;
-      margin-top: 10px;
-      font-size: 11px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      color: rgba(0,0,0,.58);
-      font-family: "Georgia", "Times New Roman", serif;
-    }
+    .tunerBottom{ display:none; } /* compact: hidden */
 
-    /* Controls */
+    /* ===== CONTROLS (compact) ===== */
     .controlRow{
-      margin-top: 12px;
+      margin-top: 10px;
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
@@ -359,7 +306,7 @@
     }
 
     .now{
-      flex: 1 1 260px;
+      flex: 1 1 240px;
       min-width: 0;
       padding: 10px 12px;
       border-radius: 16px;
@@ -370,7 +317,7 @@
     }
     .now b{
       display:block;
-      font-size: 14px;
+      font-size: 13px;
       letter-spacing:.02em;
       white-space:nowrap;
       overflow:hidden;
@@ -381,7 +328,6 @@
       margin-top:4px;
       font-size: 12px;
       color: rgba(255,255,255,.70);
-      line-height:1.2;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -414,7 +360,7 @@
     }
     .btn:active{ transform: translateY(1px); }
     .btnRound{
-      width: 52px; height: 52px;
+      width: 48px; height: 48px;
       border-radius: 999px;
       display:grid;
       place-items:center;
@@ -429,52 +375,8 @@
     }
     .toggleOn{ outline: 3px solid rgba(156,27,27,.14); }
 
-    .knobStrip{
-      margin-top: 12px;
-      display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 12px;
-    }
-    .knob{
-      border-radius: 999px;
-      aspect-ratio: 1/1;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.55), transparent 55%),
-                  linear-gradient(180deg, var(--frame), var(--frame2));
-      border: 1px solid rgba(0,0,0,.22);
-      box-shadow: 0 16px 26px rgba(0,0,0,.20), inset 0 2px 0 rgba(255,255,255,.45);
-      position:relative;
-      display:grid;
-      place-items:center;
-      user-select:none;
-    }
-    .knob::after{
-      content:"";
-      width: 3px; height: 38%;
-      background: rgba(0,0,0,.45);
-      border-radius: 2px;
-      position:absolute;
-      top: 12%;
-      box-shadow: 0 1px 0 rgba(255,255,255,.35);
-      opacity:.85;
-      transform: rotate(var(--ang, -25deg));
-      transform-origin: center 70%;
-    }
-    .knobLabel{
-      position:absolute;
-      bottom: -22px;
-      left:50%;
-      transform: translateX(-50%);
-      font-size: 10px;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      color: rgba(255,255,255,.72);
-      user-select:none;
-      white-space:nowrap;
-    }
-
-    .progressWrap{
-      margin-top: 12px;
-    }
+    /* progress: hide on very low height embeds */
+    .progressWrap{ margin-top: 10px; }
     .bar{
       height: 10px;
       border-radius: 999px;
@@ -494,6 +396,11 @@
       font-size: 12px;
       color: rgba(255,255,255,.70);
       user-select:none;
+    }
+
+    /* If embed height is small, auto-hide progress to avoid scrollbars */
+    @media (max-height: 720px){
+      .progressWrap{ display:none; }
     }
 
     .bottomRow{
@@ -517,7 +424,7 @@
       border: 1px solid rgba(0,0,0,.18);
       user-select:none;
     }
-    input[type="range"]{ width: 180px; }
+    input[type="range"]{ width: 170px; }
 
     .link{
       color: rgba(255,255,255,.78);
@@ -525,7 +432,10 @@
       border-bottom: 1px dashed rgba(255,255,255,.35);
     }
 
-    /* ===== PLAYLIST: mobile foldable to avoid scrollbars ===== */
+    /* knobs strip hidden in compact mode */
+    .knobStrip{ display:none; }
+
+    /* ===== PLAYLIST: foldable ===== */
     .book{
       border-radius: 18px;
       background: linear-gradient(180deg, #fffaf0, #f2eadc);
@@ -534,8 +444,6 @@
       padding: 14px;
     }
 
-    /* details makes it foldable */
-    details{ border-radius: 14px; }
     summary{
       cursor:pointer;
       user-select:none;
@@ -570,12 +478,10 @@
       list-style:none;
       display:grid;
       gap:8px;
-      /* On mobile: no internal scrollbar. It will expand, but user can collapse it */
       max-height: none;
       overflow: visible;
     }
 
-    /* Desktop: allow scrollbar in list (fine on desktop) */
     @media (min-width: 980px){
       .list{
         max-height: 560px;
@@ -626,11 +532,11 @@
       line-height:1.35;
     }
 
-    /* Power-off dim state */
+    /* Off dim */
     .off .radioInner{ filter: saturate(.7) contrast(.95); }
-    .off .now, .off .status, .off .progressWrap, .off .bottomRow{ opacity:.65; }
+    .off .now, .off .status, .off .bottomRow{ opacity:.65; }
     .off .needle{ opacity:.45; }
-    .off .btn, .off .knob{ filter: grayscale(.25); }
+    .off .btn{ filter: grayscale(.25); }
   </style>
 </head>
 
@@ -651,29 +557,27 @@
           </div>
 
           <button class="powerBtn" id="btnPower" type="button" aria-pressed="false" title="Tænd / sluk">
-            <span class="powerDot" id="powerDot"></span>
+            <span class="powerDot"></span>
             <span id="powerLabel">OFF</span>
           </button>
         </div>
 
         <div class="windows">
-
-          <!-- LEFT: SPEAKER + LOGO -->
+          <!-- LEFT -->
           <div class="windowFrame">
             <div class="windowInset speaker" aria-label="Højttaler og logo">
               <div class="logoPlate">
                 <div class="logoText">HIS MASTER’S<br/>OPEN VOICES</div>
-                <div class="logoOrn"><span></span></div>
                 <div class="logoSub">Åbne Stemmer • Allerød</div>
               </div>
             </div>
           </div>
 
-          <!-- RIGHT: TUNER -->
+          <!-- RIGHT -->
           <div class="windowFrame">
             <div class="windowInset tuner" aria-label="Tuner">
               <div class="tunerTop">
-                <span>Program / Skala</span>
+                <span>Skala</span>
                 <span id="freqReadout">96.0 MHz</span>
               </div>
 
@@ -684,19 +588,12 @@
                 <div class="ticks"></div>
                 <div class="needle" id="dialNeedle"></div>
               </div>
-
-              <div class="tunerBottom">
-                <span>VOL</span>
-                <span>SINTONIA</span>
-                <span>GAMMA</span>
-              </div>
             </div>
           </div>
-
         </div>
 
         <div class="controlRow">
-          <div class="now" id="nowBox">
+          <div class="now">
             <b id="nowName">Slukket</b>
             <small id="nowMeta">Tryk ON for at tænde</small>
             <div class="status" id="statusHint">Tip: Shuffle giver “radio-feeling”.</div>
@@ -726,17 +623,11 @@
           </div>
         </div>
 
-        <div class="knobStrip" aria-hidden="true">
-          <div class="knob" id="k1" style="--ang:-25deg"><span class="knobLabel">VOLUME</span></div>
-          <div class="knob" id="k2" style="--ang:-15deg"><span class="knobLabel">TUNING</span></div>
-          <div class="knob" id="k3" style="--ang:-20deg"><span class="knobLabel">TONE</span></div>
-        </div>
-
         <audio id="audio" preload="metadata"></audio>
       </div>
     </div>
 
-    <!-- PLAYLIST (foldable on mobile) -->
+    <!-- PLAYLIST (foldable) -->
     <div class="book">
       <details id="plDetails">
         <summary>
@@ -753,17 +644,16 @@
   </div>
 
 <script>
-  // MP3-filer i roden (samme mappe som index.html)
   const TRACKS = [
-    { title: "1. 21-4",                       artist: "Åbne Stemmer", url: "01-21-4.mp3" },
-    { title: "2. Weather With You",           artist: "Åbne Stemmer", url: "02-weather-with-you.mp3" },
-    { title: "3. Fragile",                    artist: "Åbne Stemmer", url: "03-fragile.mp3" },
-    { title: "4. Ordinary World",             artist: "Åbne Stemmer", url: "04-Ordinary-World.mp3" },
-    { title: "5. Det kun vigtigt (hvad det er)", artist: "Åbne Stemmer", url: "05-det-kun-vigtigt-hvad-det-er.mp3" },
-    { title: "6. Frit Land",                  artist: "Åbne Stemmer", url: "06-frit-land.mp3" },
-    { title: "7. I morgen er der osse en dag", artist: "Åbne Stemmer", url: "07-imorgen-er-der-osse-en-dag.mp3" },
-    { title: "8. Africa",                     artist: "Åbne Stemmer", url: "08-africa.mp3" },
-    { title: "9. Afterglow",                  artist: "Åbne Stemmer", url: "09-afterglow.mp3" }
+    { title: "1. 21-4",                         artist: "Åbne Stemmer", url: "01-21-4.mp3" },
+    { title: "2. Weather With You",             artist: "Åbne Stemmer", url: "02-weather-with-you.mp3" },
+    { title: "3. Fragile",                      artist: "Åbne Stemmer", url: "03-fragile.mp3" },
+    { title: "4. Ordinary World",               artist: "Åbne Stemmer", url: "04-Ordinary-World.mp3" },
+    { title: "5. Det kun vigtigt (hvad det er)",artist: "Åbne Stemmer", url: "05-det-kun-vigtigt-hvad-det-er.mp3" },
+    { title: "6. Frit Land",                    artist: "Åbne Stemmer", url: "06-frit-land.mp3" },
+    { title: "7. I morgen er der osse en dag",  artist: "Åbne Stemmer", url: "07-imorgen-er-der-osse-en-dag.mp3" },
+    { title: "8. Africa",                       artist: "Åbne Stemmer", url: "08-africa.mp3" },
+    { title: "9. Afterglow",                    artist: "Åbne Stemmer", url: "09-afterglow.mp3" }
   ];
 
   const el = (id)=>document.getElementById(id);
@@ -792,8 +682,6 @@
   const dialNeedle = el("dialNeedle");
   const freqReadout = el("freqReadout");
 
-  const k1 = el("k1"), k2 = el("k2"), k3 = el("k3");
-
   const plDetails = el("plDetails");
   const chev = el("chev");
 
@@ -802,7 +690,7 @@
   let isLoop = true;
   let isOn = false;
 
-  // Mobile default: keep playlist collapsed to avoid scrollbars
+  // Collapse playlist on mobile by default
   if (window.matchMedia && window.matchMedia("(max-width: 979px)").matches){
     plDetails.open = false;
     chev.textContent = "⌄";
@@ -847,15 +735,8 @@
   function moveNeedle(){
     const pct = (index / Math.max(1, TRACKS.length - 1));
     dialNeedle.style.left = `calc(10px + ${pct} * (100% - 20px))`;
-
     const freq = 88 + pct * 20;
     freqReadout.textContent = `${freq.toFixed(1)} MHz`;
-
-    const angTune = -35 + pct * 70;
-    k2.style.setProperty("--ang", `${angTune}deg`);
-
-    const angTone = -25 + pct * 50;
-    k3.style.setProperty("--ang", `${angTone}deg`);
   }
 
   function load(i, autoplay=false){
@@ -863,20 +744,19 @@
     setActive();
     moveNeedle();
 
-    // allow selecting while OFF (preview)
+    const t = TRACKS[index];
+    openTrack.href = t.url;
+
     if (!isOn){
-      nowName.textContent = TRACKS[index].title;
+      nowName.textContent = t.title;
       nowMeta.textContent = "Klar når du tænder";
-      openTrack.href = TRACKS[index].url;
       statusHint.textContent = "Radioen er slukket. Tryk ON først.";
       return;
     }
 
-    const t = TRACKS[index];
     audio.src = t.url;
     nowName.textContent = t.title;
     nowMeta.textContent = t.artist || "";
-    openTrack.href = t.url;
 
     if (autoplay){
       audio.play().then(()=>{
@@ -901,12 +781,9 @@
       load(index + 1, true);
     }
   }
-  function prev(){
-    if (!isOn) return;
-    load(index - 1, true);
-  }
+  function prev(){ if (isOn) load(index - 1, true); }
 
-  // ===== Longer retro "on/off" hiss + crackle (Web Audio) =====
+  // ===== Longer retro power hiss/crackle =====
   let AC = null;
   function ensureAudioContext(){
     if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
@@ -917,43 +794,35 @@
     const ac = ensureAudioContext();
     const now = ac.currentTime;
 
-    // master
     const master = ac.createGain();
     master.gain.setValueAtTime(0.0001, now);
     master.connect(ac.destination);
 
-    // duration
-    const dur = on ? 0.55 : 0.38; // longer ON hiss
+    const dur = on ? 0.75 : 0.45;
 
-    // noise buffer (hiss/crackle)
+    // noise buffer
     const bufferSize = Math.floor(ac.sampleRate * dur);
     const buffer = ac.createBuffer(1, bufferSize, ac.sampleRate);
     const data = buffer.getChannelData(0);
 
     for (let i=0; i<bufferSize; i++){
-      const t = i / bufferSize; // 0..1
-      // base hiss
-      let s = (Math.random()*2 - 1) * 0.30;
-
-      // crackle spikes (more on power-on)
-      const p = on ? 0.010 : 0.006;
+      const t = i / bufferSize;
+      let s = (Math.random()*2 - 1) * 0.26;  // base hiss
+      const p = on ? 0.014 : 0.008;          // more crackle on ON
       if (Math.random() < p){
-        s += (Math.random()*2 - 1) * (on ? 1.2 : 0.9) * (1 - t);
+        s += (Math.random()*2 - 1) * (on ? 1.35 : 1.0) * (1 - t);
       }
-
-      // envelope: quick rise, slow fall
-      const env = (t < 0.12) ? (t/0.12) : Math.pow(1 - t, 1.2);
+      const env = (t < 0.10) ? (t/0.10) : Math.pow(1 - t, 1.05);
       data[i] = s * env;
     }
 
     const noise = ac.createBufferSource();
     noise.buffer = buffer;
 
-    // bandpass + lowpass to sound "radio-ish"
     const bp = ac.createBiquadFilter();
     bp.type = "bandpass";
-    bp.frequency.setValueAtTime(on ? 1100 : 900, now);
-    bp.Q.setValueAtTime(0.9, now);
+    bp.frequency.setValueAtTime(on ? 1200 : 900, now);
+    bp.Q.setValueAtTime(0.95, now);
 
     const lp = ac.createBiquadFilter();
     lp.type = "lowpass";
@@ -961,7 +830,7 @@
 
     const nGain = ac.createGain();
     nGain.gain.setValueAtTime(0.0001, now);
-    nGain.gain.linearRampToValueAtTime(on ? 0.14 : 0.10, now + 0.03);
+    nGain.gain.linearRampToValueAtTime(on ? 0.16 : 0.11, now + 0.03);
     nGain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
 
     // click transient
@@ -971,10 +840,9 @@
 
     const cGain = ac.createGain();
     cGain.gain.setValueAtTime(0.0, now);
-    cGain.gain.linearRampToValueAtTime(on ? 0.16 : 0.12, now + 0.004);
-    cGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.045);
+    cGain.gain.linearRampToValueAtTime(on ? 0.18 : 0.13, now + 0.004);
+    cGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.055);
 
-    // wire
     noise.connect(bp);
     bp.connect(nGain);
     nGain.connect(lp);
@@ -984,17 +852,18 @@
     cGain.connect(master);
 
     master.gain.exponentialRampToValueAtTime(1.0, now + 0.01);
-    master.gain.exponentialRampToValueAtTime(0.0001, now + dur + 0.02);
+    master.gain.exponentialRampToValueAtTime(0.0001, now + dur + 0.03);
 
     noise.start(now);
     noise.stop(now + dur);
 
     click.start(now);
-    click.stop(now + 0.05);
+    click.stop(now + 0.06);
   }
 
   function setPower(state){
     isOn = state;
+
     cabinet.classList.toggle("off", !isOn);
     btnPower.classList.toggle("powerOn", isOn);
     btnPower.setAttribute("aria-pressed", isOn ? "true" : "false");
@@ -1002,11 +871,11 @@
 
     if (isOn){
       playPowerSound({on:true});
-      // prepare
-      nowName.textContent = TRACKS[index]?.title || "Klar";
+      const t = TRACKS[index];
+      nowName.textContent = t?.title || "Klar";
       nowMeta.textContent = "Vælg sang i playlisten";
       statusHint.textContent = "Tryk ▶ Start (autoplay kræver normalt et klik).";
-      openTrack.href = TRACKS[index]?.url || "#";
+      openTrack.href = t?.url || "#";
       moveNeedle();
     } else {
       playPowerSound({on:false});
@@ -1033,7 +902,6 @@
       return;
     }
     if (!audio.src){
-      // load current without autoplay first
       const t = TRACKS[index];
       audio.src = t.url;
       openTrack.href = t.url;
@@ -1100,12 +968,7 @@
     if (audio.duration) audio.currentTime = x * audio.duration;
   });
 
-  vol.addEventListener("input", ()=>{
-    audio.volume = parseFloat(vol.value);
-    const pct = parseFloat(vol.value);
-    const ang = -35 + pct * 70;
-    k1.style.setProperty("--ang", `${ang}deg`);
-  });
+  vol.addEventListener("input", ()=> audio.volume = parseFloat(vol.value));
   audio.volume = parseFloat(vol.value);
 
   openTrack.addEventListener("click", (e)=>{
@@ -1116,22 +979,10 @@
   renderList();
   setActive();
   moveNeedle();
-  // OFF at start
   setPower(false);
-
-  // start with first track selected visually
-  function moveNeedle(){ /* overwritten above by hoisting; keep safe */ }
-</script>
-
-<script>
-  // Patch: hoisting safety for moveNeedle reference at end of first script block
-  // (kept minimal; real moveNeedle is already defined above in same scope in most browsers)
-</script>
-
-<script>
-  // Actually define moveNeedle safely if browser hoists differently (defensive)
-  // This block is intentionally empty.
+  load(0,false);
 </script>
 
 </body>
 </html>
+
