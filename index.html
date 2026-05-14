@@ -644,17 +644,51 @@
   </div>
 
 <script>
-  const TRACKS = [
-    { title: "1. 21-4",                         artist: "Åbne Stemmer", url: "01-21-4.mp3" },
-    { title: "2. Weather With You",             artist: "Åbne Stemmer", url: "02-weather-with-you.mp3" },
-    { title: "3. Fragile",                      artist: "Åbne Stemmer", url: "03-fragile.mp3" },
-    { title: "4. Ordinary World",               artist: "Åbne Stemmer", url: "04-Ordinary-World.mp3" },
-    { title: "5. Det kun vigtigt (hvad det er)",artist: "Åbne Stemmer", url: "05-det-kun-vigtigt-hvad-det-er.mp3" },
-    { title: "6. Frit Land",                    artist: "Åbne Stemmer", url: "06-frit-land.mp3" },
-    { title: "7. I morgen er der osse en dag",  artist: "Åbne Stemmer", url: "07-imorgen-er-der-osse-en-dag.mp3" },
-    { title: "8. Africa",                       artist: "Åbne Stemmer", url: "08-africa.mp3" },
-    { title: "9. Afterglow",                    artist: "Åbne Stemmer", url: "09-afterglow.mp3" }
-  ];
+ /* ==================================================
+   ULTRA SIMPLE RADIO SYSTEM
+================================================== */
+
+const FILES = `
+
+01-21-4.mp3
+02-weather-with-you.mp3
+03-fragile.mp3
+04-ordinary-world.mp3
+05-det-kun-vigtigt.mp3
+06-frit-land.mp3
+07-imorgen-er-der-osse-en-dag.mp3
+08-africa.mp3
+09-afterglow.mp3
+
+`;
+
+function makeTitle(filename, index){
+
+  let title = filename.replace(".mp3", "");
+
+  title = title.replace(/^\d+[-_]?/, "");
+
+  title = title.replace(/-/g, " ");
+
+  title = title.replace(/\b\w/g, l => l.toUpperCase());
+
+  return `${index + 1}. ${title}`;
+}
+
+const TRACKS = FILES
+  .trim()
+  .split("\n")
+  .filter(line => line.trim() !== "")
+  .map((file, index) => {
+
+    file = file.trim();
+
+    return {
+      title: makeTitle(file, index),
+      artist: "His Master's Open Voices",
+      url: file
+    };
+  });
 
   const el = (id)=>document.getElementById(id);
 
